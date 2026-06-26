@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="description" content="Saphalya Das – AI Researcher &amp; ML Engineer. Multimodal AI, Neural Interfaces, Generative Systems, Mental Health Intelligence." />
+    <title>Saphalya Das · AI Researcher &amp; ML Engineer</title>
+    <meta property="og:title" content="Saphalya Das · AI Researcher &amp; ML Engineer" />
+    <meta property="og:description" content="Multimodal AI · Neural Decoding · Genomic Intelligence · BCI · RAG · LLMs" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://saphalyadas.com" />
+    <meta property="og:image" content="https://saphalyadas.com/img.png" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://saphalyadas.com" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ----- RESET & BASE ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #00f0c0;
+            --primary-glow: rgba(0, 240, 192, 0.45);
+            --accent: #d946ef;
+            --accent-glow: rgba(217, 70, 239, 0.35);
+            --bg: #05050a;
+            --glass: rgba(8, 8, 18, 0.78);
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f0f2f8;
+            --text-secondary: #989aa8;
+            --radius: 28px;
+            --shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9);
+            --transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(0, 240, 192, 0.06), rgba(217, 70, 239, 0.04), transparent 70%),
+                radial-gradient(ellipse at 70% 80%, rgba(0, 240, 192, 0.04), rgba(217, 70, 239, 0.03), transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+            z-index: -3;
+            pointer-events: none;
+        }
+        @keyframes bgPulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(1.15) rotate(6deg);
+                opacity: 1;
+            }
+        }
+        ::selection {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* ----- WebGL containers (with fallback) ----- */
+        #aurora-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            background: transparent;
+        }
+        #aurora-container canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
+        #plasma-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.35;
+            mix-blend-mode: screen;
+        }
+        #plasma-container canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ----- Particle system ----- */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.55;
+        }
+
+        /* ----- custom cursor (desktop only) ----- */
+        .cursor-dot {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s, opacity 0.3s;
+            display: none;
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+        .cursor-dot.hover {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            mix-blend-mode: normal;
+            opacity: 0.3;
+        }
+        @media (pointer: coarse) {
+            .cursor-dot {
+                display: none !important;
+            }
+        }
+
+        /* ----- scrollbar ----- */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 12px;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* ----- floating navbar ----- */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: calc(100% - 40px);
+            max-width: 1280px;
+            padding: 14px 32px;
+            background: rgba(6, 6, 14, 0.75);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+        }
+        .navbar.shrink {
+            top: 10px;
+            padding: 10px 24px;
+            background: rgba(6, 6, 14, 0.92);
+            backdrop-filter: blur(28px);
+            border-color: rgba(255, 255, 255, 0.04);
+        }
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradShift 4s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes gradShift {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 450;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+            position: relative;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.4s ease;
+            border-radius: 4px;
+        }
+        .nav-links a:hover {
+            color: #fff;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a.active {
+            color: #fff;
+        }
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #000 !important;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem !important;
+            transition: all 0.3s;
+            box-shadow: 0 4px 24px rgba(0, 240, 192, 0.25);
+        }
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 40px rgba(0, 240, 192, 0.4) !important;
+            color: #000 !important;
+        }
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        /* ----- sections ----- */
+        section {
+            position: relative;
+            z-index: 2;
+            padding: 100px 0;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+            background: rgba(0, 240, 192, 0.08);
+            padding: 5px 18px;
+            border-radius: 60px;
+            border: 1px solid rgba(0, 240, 192, 0.15);
+            margin-bottom: 12px;
+            backdrop-filter: blur(8px);
+        }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 600;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .section-title span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ----- hero ----- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 240, 192, 0.06);
+            border: 1px solid rgba(0, 240, 192, 0.15);
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 30px rgba(0, 240, 192, 0.05);
+        }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 9vw, 6.5rem);
+            font-weight: 700;
+            line-height: 1.02;
+            letter-spacing: -3px;
+            margin-bottom: 8px;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradShift 5s ease-in-out infinite;
+        }
+        .hero-tagline {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin: 16px 0 32px;
+            line-height: 1.8;
+        }
+        .hero-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .btn {
+            padding: 14px 34px;
+            border-radius: 80px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #00c9a0);
+            color: #000;
+            box-shadow: 0 8px 32px rgba(0, 240, 192, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 56px rgba(0, 240, 192, 0.45);
+        }
+        .btn-outline {
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.02);
+            color: #fff;
+            backdrop-filter: blur(8px);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            background: rgba(0, 240, 192, 0.06);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(0, 240, 192, 0.1);
+        }
+        .btn-ghost {
+            color: var(--text-secondary);
+            padding: 14px 20px;
+        }
+        .btn-ghost:hover {
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 450;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .hero-profile {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .profile-ring {
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            padding: 8px;
+            background: conic-gradient(from 0deg, var(--primary), var(--accent), var(--primary), var(--accent), var(--primary));
+            animation: spin-ring 12s linear infinite;
+            box-shadow: 0 0 120px rgba(0, 240, 192, 0.15), 0 0 60px rgba(217, 70, 239, 0.1);
+        }
+        @keyframes spin-ring {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .profile-ring-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--bg);
+            border: 6px solid var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-ring-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .floating-badge {
+            position: absolute;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 60px;
+            padding: 8px 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: float 5s ease-in-out infinite;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+        .floating-badge:nth-child(2) {
+            top: 5%;
+            right: -8%;
+            animation-delay: 1.2s;
+            border-color: rgba(0, 240, 192, 0.15);
+        }
+        .floating-badge:nth-child(3) {
+            bottom: 12%;
+            left: -10%;
+            animation-delay: 2.6s;
+            border-color: rgba(217, 70, 239, 0.15);
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-14px);
+            }
+        }
+
+        /* ----- glass cards ----- */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+        }
+        .glass:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 40px 80px -16px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ----- timeline ----- */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent), transparent);
+            border-radius: 4px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 36px;
+            padding-left: 32px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 10px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 30px var(--primary-glow), inset 0 0 20px rgba(0, 240, 192, 0.1);
+        }
+        .timeline-item .glass {
+            padding: 28px 32px;
+        }
+        .timeline-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+            gap: 8px;
+        }
+        .timeline-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .timeline-header .date {
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            background: rgba(0, 240, 192, 0.06);
+            padding: 2px 14px;
+            border-radius: 60px;
+            border: 1px solid rgba(0, 240, 192, 0.08);
+        }
+        .timeline-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 12px 0;
+        }
+        .timeline-tech span {
+            background: rgba(0, 240, 192, 0.05);
+            border: 1px solid rgba(0, 240, 192, 0.08);
+            padding: 3px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 450;
+        }
+        .timeline-item ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        .timeline-item ul li {
+            padding: 4px 0;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            padding-left: 20px;
+            position: relative;
+        }
+        .timeline-item ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* ----- skill chips ----- */
+        .skill-group {
+            margin-bottom: 26px;
+        }
+        .skill-group h4 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+        .skill-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill-chip {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 7px 20px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 450;
+            transition: all 0.3s;
+            cursor: default;
+            color: var(--text-secondary);
+        }
+        .skill-chip:hover {
+            background: rgba(0, 240, 192, 0.05);
+            border-color: var(--primary);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+
+        /* ----- project / pub cards ----- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+        }
+        .project-card .glass {
+            padding: 28px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 28px;
+        }
+        .project-card .icon {
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+        }
+        .project-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .project-card .tech {
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+        .project-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            flex: 1;
+        }
+        .project-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .project-card .tags span {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3px 14px;
+            border-radius: 60px;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* ----- awards / certs ----- */
+        .award-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .award-card .glass {
+            padding: 22px 26px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-radius: 24px;
+        }
+        .award-card .icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        .award-card h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .award-card p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .cert-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .cert-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 9px 22px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            color: var(--text-secondary);
+        }
+        .cert-item:hover {
+            border-color: var(--primary);
+            background: rgba(0, 240, 192, 0.04);
+            transform: scale(1.04);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ----- contact ----- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 48px;
+        }
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .contact-info-item .icon {
+            width: 40px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-info-item .icon svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--text-secondary);
+            transition: fill 0.3s;
+        }
+        .contact-info-item:hover .icon svg {
+            fill: var(--primary);
+        }
+        .contact-info-item a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+            word-break: break-word;
+        }
+        .contact-info-item a:hover {
+            color: var(--primary);
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border 0.3s, box-shadow 0.3s;
+            outline: none;
+            margin-bottom: 16px;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 240, 192, 0.05);
+        }
+        .contact-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .contact-form .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ----- footer ----- */
+        footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 48px 0 32px;
+            margin-top: 40px;
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-socials a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .footer-socials a svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-secondary);
+            transition: fill 0.3s;
+        }
+        .footer-socials a:hover svg {
+            fill: var(--primary);
+        }
+
+        /* ----- back to top ----- */
+        .back-top {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(24px);
+            pointer-events: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .back-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .back-top:hover {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #000;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 48px var(--primary-glow);
+        }
+
+        /* ----- reveal animations ----- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================================ */
+        /*              RESPONSIVE                                       */
+        /* ============================================================ */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+            .hero-desc {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-btns {
+                justify-content: center;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .profile-ring {
+                width: 260px;
+                height: 260px;
+            }
+            .floating-badge {
+                display: none;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            .navbar {
+                padding: 12px 24px;
+                border-radius: 40px;
+                width: calc(100% - 28px);
+                top: 14px;
+            }
+            .nav-links {
+                gap: 1.2rem;
+            }
+            .nav-links a {
+                font-size: 0.78rem;
+            }
+            .nav-cta {
+                padding: 5px 16px;
+                font-size: 0.7rem !important;
+            }
+            section {
+                padding: 70px 0;
+            }
+            .container {
+                padding: 0 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 18px;
+                border-radius: 32px;
+                top: 12px;
+                width: calc(100% - 20px);
+            }
+            .nav-logo {
+                font-size: 1.1rem;
+            }
+            .nav-links {
+                gap: 0.7rem;
+            }
+            .nav-links a {
+                font-size: 0.7rem;
+            }
+            .nav-cta {
+                padding: 4px 12px;
+                font-size: 0.6rem !important;
+            }
+            .hero h1 {
+                font-size: 2.6rem;
+                letter-spacing: -1.5px;
+            }
+            .hero-tagline {
+                font-size: 1.05rem;
+            }
+            .hero-desc {
+                font-size: 0.95rem;
+            }
+            .hero-stats {
+                gap: 24px;
+                margin-top: 32px;
+                padding-top: 24px;
+            }
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            .profile-ring {
+                width: 210px;
+                height: 210px;
+            }
+            .btn {
+                padding: 11px 24px;
+                font-size: 0.82rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            .award-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-item .glass {
+                padding: 20px 22px;
+            }
+            .timeline-header h3 {
+                font-size: 1.05rem;
+            }
+            .glass {
+                border-radius: 20px;
+            }
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            .navbar {
+                padding: 8px 14px;
+                border-radius: 28px;
+                top: 10px;
+                width: calc(100% - 16px);
+            }
+            .nav-logo {
+                font-size: 0.95rem;
+            }
+            .nav-links {
+                gap: 0.4rem;
+            }
+            .nav-links a {
+                font-size: 0.6rem;
+            }
+            .nav-cta {
+                padding: 3px 10px;
+                font-size: 0.55rem !important;
+            }
+            #hero {
+                min-height: 90vh;
+                padding-top: 70px;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+                letter-spacing: -1px;
+            }
+            .hero-tagline {
+                font-size: 0.9rem;
+            }
+            .hero-desc {
+                font-size: 0.85rem;
+                margin: 12px 0 20px;
+            }
+            .hero-btns {
+                gap: 8px;
+            }
+            .btn {
+                padding: 9px 18px;
+                font-size: 0.72rem;
+            }
+            .hero-stats {
+                gap: 16px;
+                margin-top: 24px;
+                padding-top: 18px;
+            }
+            .stat-number {
+                font-size: 1.4rem;
+            }
+            .stat-label {
+                font-size: 0.65rem;
+            }
+            .profile-ring {
+                width: 170px;
+                height: 170px;
+                padding: 5px;
+            }
+            .profile-ring-inner {
+                border-width: 4px;
+            }
+            section {
+                padding: 50px 0;
+            }
+            .section-label {
+                font-size: 0.6rem;
+                padding: 4px 14px;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .timeline {
+                padding-left: 20px;
+            }
+            .timeline-item {
+                padding-left: 20px;
+                margin-bottom: 24px;
+            }
+            .timeline-item::before {
+                left: -16px;
+                width: 10px;
+                height: 10px;
+                border-width: 2px;
+            }
+            .timeline-item .glass {
+                padding: 16px 18px;
+                border-radius: 16px;
+            }
+            .timeline-header h3 {
+                font-size: 0.9rem;
+            }
+            .timeline-header .date {
+                font-size: 0.7rem;
+                padding: 2px 10px;
+            }
+            .timeline-tech span {
+                font-size: 0.6rem;
+                padding: 2px 10px;
+            }
+            .timeline-item ul li {
+                font-size: 0.8rem;
+                padding-left: 14px;
+            }
+            .skill-chip {
+                font-size: 0.7rem;
+                padding: 5px 14px;
+            }
+            .project-card .glass {
+                padding: 18px 20px;
+                border-radius: 18px;
+            }
+            .project-card h3 {
+                font-size: 1rem;
+            }
+            .project-card p {
+                font-size: 0.82rem;
+            }
+            .award-card .glass {
+                padding: 16px 18px;
+                border-radius: 18px;
+            }
+            .award-card h4 {
+                font-size: 0.85rem;
+            }
+            .cert-item {
+                font-size: 0.7rem;
+                padding: 6px 16px;
+            }
+            .contact-form input,
+            .contact-form textarea {
+                font-size: 0.85rem;
+                padding: 11px 14px;
+            }
+            .back-top {
+                width: 42px;
+                height: 42px;
+                font-size: 1rem;
+                bottom: 18px;
+                right: 18px;
+            }
+            footer {
+                padding: 32px 0 20px;
+            }
+            .footer-socials a svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-links {
+                gap: 0.25rem;
+            }
+            .nav-links a {
+                font-size: 0.5rem;
+            }
+            .nav-cta {
+                padding: 2px 8px;
+                font-size: 0.5rem !important;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .profile-ring {
+                width: 140px;
+                height: 140px;
+            }
+            .btn {
+                padding: 7px 14px;
+                font-size: 0.65rem;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Aurora background -->
+    <div id="aurora-container"></div>
+    <!-- Plasma overlay -->
+    <div id="plasma-container"></div>
+    <!-- Particle system -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- custom cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- navbar -->
+    <nav class="navbar" id="navbar">
+        <span class="nav-logo">SAPHALYA</span>
+        <ul class="nav-links">
+            <li><a href="#hero" class="active">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <div class="hero-badge">✦ AI RESEARCHER &amp; ML ENGINEER</div>
+                <h1>Saphalya <span class="highlight">Das</span></h1>
+                <div class="hero-tagline">Building next‑gen intelligent systems</div>
+                <p class="hero-desc">
+                    Multimodal AI · Neural Interfaces · Generative Systems · Mental Health Intelligence
+                </p>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn btn-primary magnetic">Explore Work →</a>
+                    <a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank" class="btn btn-outline magnetic">LinkedIn</a>
+                    <a href="https://github.com/Zis440" target="_blank" class="btn btn-outline magnetic">GitHub</a>
+                    <a href="#contact" class="btn btn-ghost magnetic">Contact</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item"><span class="stat-number" id="statProjects">5</span><span class="stat-label">Projects</span></div>
+                    <div class="stat-item"><span class="stat-number" id="statPubs">3</span><span class="stat-label">Publications</span></div>
+                    <div class="stat-item"><span class="stat-number" id="statAwards">2</span><span class="stat-label">Awards</span></div>
+                    <div class="stat-item"><span class="stat-number" id="statExp">2</span><span class="stat-label">Experience</span></div>
+                </div>
+            </div>
+            <div class="hero-profile">
+                <div class="profile-ring">
+                    <div class="profile-ring-inner">
+                        <img src="img.png" alt="Saphalya Das" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#00f0c0,#d946ef);border-radius:50%;font-family:Space+Grotesk,sans-serif;font-size:clamp(2rem,6vw,4rem);font-weight:700;color:#05050a;>SD</div>';" />
+                    </div>
+                </div>
+                <div class="floating-badge" style="top:5%; right:-8%;">🧠 Neural AI</div>
+                <div class="floating-badge" style="bottom:12%; left:-10%;">⚡ Multimodal</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" style="padding-top:20px;">
+        <div class="container">
+            <div class="reveal"><span class="section-label">About</span></div>
+            <div class="reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
+                <div>
+                    <h2 class="section-title">Passionate <span>AI</span> researcher &amp; systems engineer</h2>
+                    <p style="color:var(--text-secondary); font-size:1.05rem; line-height:1.8; max-width:600px;">
+                        Creating transformative technologies that bridge human cognition and machine intelligence.
+                        Currently pursuing M.Tech in CSE while contributing to cutting-edge research in multimodal mental health AI,
+                        neural decoding, and genomic intelligence.
+                    </p>
+                    <div style="display:flex; flex-wrap:wrap; gap:24px; margin-top:28px;">
+                        <div><span style="color:var(--primary); font-weight:600;">📍</span> Kolkata, India</div>
+                        <div><span style="color:var(--primary); font-weight:600;">🎯</span> Multimodal AI · BCI · RAG</div>
+                    </div>
+                </div>
+                <div class="glass" style="padding:32px; border-radius:28px;">
+                    <h4 style="font-size:1rem; margin-bottom:16px; color:var(--text);">Research interests</h4>
+                    <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                        <span class="skill-chip">Multimodal AI</span>
+                        <span class="skill-chip">Mental Health AI</span>
+                        <span class="skill-chip">Neural Interfaces (BCI)</span>
+                        <span class="skill-chip">Generative AI</span>
+                        <span class="skill-chip">Computer Vision</span>
+                        <span class="skill-chip">NLP &amp; LLMs</span>
+                        <span class="skill-chip">RAG &amp; Knowledge Graphs</span>
+                        <span class="skill-chip">System Design</span>
+                        <span class="skill-chip">Backend Engineering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" style="background:rgba(255,255,255,0.005);">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Experience</span></div>
+            <h2 class="section-title reveal">Professional <span>journey</span></h2>
+
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="glass">
+                        <div class="timeline-header">
+                            <h3>AI/ML Developer (Contract)</h3>
+                            <span class="date">Mar 2026 – Jun 2026</span>
+                        </div>
+                        <div style="color:var(--text-secondary); font-weight:500;">TECHGEN CYBER SOLUTION PVT.LTD.</div>
+                        <div class="timeline-tech">
+                            <span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>React</span>
+                            <span>NLP</span><span>RAG</span><span>FAISS</span><span>Knowledge Graphs</span><span>LLMs</span>
+                        </div>
+                        <ul>
+                            <li>Developed backend services for psychological assessments, automated report generation, patient management, psychologist verification, and role‑based access control.</li>
+                            <li>Built Retrieval‑Augmented Generation (RAG) pipelines using FAISS, semantic embeddings, and knowledge retrieval frameworks for assessment interpretation and report enrichment.</li>
+                            <li>Implemented NLP and LLM‑powered modules for narrative analysis, theme extraction, psychological profiling, and automated report generation.</li>
+                            <li>Designed scalable APIs, database schemas, audit logging mechanisms, transaction workflows, and remote assessment systems.</li>
+                            <li>Integrated knowledge graph and semantic processing frameworks to enable contextual psychological analysis and decision support.</li>
+                            <li>Collaborated with psychologists and researchers to convert assessment methodologies into production‑ready digital solutions.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal">
+                    <div class="glass">
+                        <div class="timeline-header">
+                            <h3>Research Intern – Backend &amp; AI Systems</h3>
+                            <span class="date">Nov 2025 – Feb 2026</span>
+                        </div>
+                        <div style="color:var(--text-secondary); font-weight:500;">IEM Research Foundation, Kolkata (On‑site)</div>
+                        <div class="timeline-tech">
+                            <span>Python</span><span>FastAPI</span><span>PostgreSQL</span>
+                            <span>ML</span><span>NLP</span><span>Transformers (BERT)</span><span>REST APIs</span>
+                        </div>
+                        <ul>
+                            <li>Led end‑to‑end backend architecture and development of PsyPredict, a multimodal AI prescreening platform for early mental health assessment using text, behavioral, and emotional data.</li>
+                            <li>Designed and optimized AI/ML pipelines, fine‑tuning Transformer‑based models (BERT) for natural language understanding, symptom analysis, and predictive insights.</li>
+                            <li>Developed scalable Python APIs, real‑time inference systems, and data processing workflows for production‑ready deployment.</li>
+                            <li>Collaborated with researchers and psychologists to translate clinical requirements into robust digital solutions while ensuring system reliability and usability.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Education</span></div>
+            <h2 class="section-title reveal">Academic <span>background</span></h2>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="glass">
+                        <div class="timeline-header">
+                            <h3>M.Tech – Computer Science &amp; Engineering</h3>
+                            <span class="date">2025 – 2027</span>
+                        </div>
+                        <div style="color:var(--text-secondary);">Institute of Engineering and Management, Kolkata</div>
+                        <div style="color:var(--primary); font-weight:500; margin-top:4px;">CGPA: 7.5 (ongoing)</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="glass">
+                        <div class="timeline-header">
+                            <h3>B.Tech – Computer Science &amp; Engineering</h3>
+                            <span class="date">2021 – 2025</span>
+                        </div>
+                        <div style="color:var(--text-secondary);">Institute of Engineering and Management, Kolkata</div>
+                        <div style="color:var(--primary); font-weight:500; margin-top:4px;">Grade: A</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="glass">
+                        <div class="timeline-header">
+                            <h3>Higher Secondary (11th &amp; 12th)</h3>
+                            <span class="date">2019 – 2021</span>
+                        </div>
+                        <div style="color:var(--text-secondary);">Nava Nalanda Santiniketan, India</div>
+                        <div style="color:var(--primary); font-weight:500; margin-top:4px;">Grade: A</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="glass">
+                        <div class="timeline-header">
+                            <h3>Secondary (10th)</h3>
+                            <span class="date">2011 – 2019</span>
+                        </div>
+                        <div style="color:var(--text-secondary);">Nava Nalanda Santiniketan, India</div>
+                        <div style="color:var(--primary); font-weight:500; margin-top:4px;">Grade: A</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" style="background:rgba(255,255,255,0.005);">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Skills</span></div>
+            <h2 class="section-title reveal">Technology <span>stack</span></h2>
+            <div class="glass" style="padding:40px; border-radius:28px;">
+                <div class="skill-group"><h4>Programming</h4><div class="skill-chips"><span class="skill-chip">Python</span><span class="skill-chip">C</span><span class="skill-chip">OOP</span><span class="skill-chip">DSA</span></div></div>
+                <div class="skill-group"><h4>Data &amp; Libraries</h4><div class="skill-chips"><span class="skill-chip">NumPy</span><span class="skill-chip">Pandas</span><span class="skill-chip">Scikit‑learn</span><span class="skill-chip">Matplotlib</span><span class="skill-chip">spaCy</span><span class="skill-chip">Transformers</span><span class="skill-chip">Sentence Transformers</span><span class="skill-chip">FAISS</span></div></div>
+                <div class="skill-group"><h4>AI / ML</h4><div class="skill-chips"><span class="skill-chip">Machine Learning</span><span class="skill-chip">Deep Learning</span><span class="skill-chip">NLP</span><span class="skill-chip">Computer Vision</span><span class="skill-chip">Generative AI</span><span class="skill-chip">LLMs</span><span class="skill-chip">RAG</span><span class="skill-chip">Semantic Search</span></div></div>
+                <div class="skill-group"><h4>Development &amp; Architecture</h4><div class="skill-chips"><span class="skill-chip">Backend Engineering</span><span class="skill-chip">Full‑Stack</span><span class="skill-chip">API Development</span><span class="skill-chip">Database Design</span><span class="skill-chip">System Design</span><span class="skill-chip">Pipeline Development</span><span class="skill-chip">Workflow Automation</span><span class="skill-chip">Assessment Engines</span><span class="skill-chip">Report Generation</span></div></div>
+                <div class="skill-group"><h4>AI Systems &amp; Frameworks</h4><div class="skill-chips"><span class="skill-chip">Knowledge Graphs</span><span class="skill-chip">Vector Databases</span><span class="skill-chip">Embeddings</span><span class="skill-chip">Prompt Engineering</span><span class="skill-chip">Feature Engineering</span><span class="skill-chip">FastAPI</span><span class="skill-chip">React</span><span class="skill-chip">PostgreSQL</span><span class="skill-chip">SQLAlchemy</span><span class="skill-chip">REST APIs</span><span class="skill-chip">JWT</span><span class="skill-chip">RBAC</span></div></div>
+                <div class="skill-group"><h4>Design</h4><div class="skill-chips"><span class="skill-chip">UI/UX Design</span><span class="skill-chip">Figma</span><span class="skill-chip">Adobe XD</span><span class="skill-chip">Product Planning</span><span class="skill-chip">Prototyping</span></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Projects</span></div>
+            <h2 class="section-title reveal">Research &amp; <span>engineering</span></h2>
+            <div class="project-grid">
+                <div class="project-card reveal"><div class="glass"><div class="icon">🧬</div><h3>AI Genomic Hybridization Analysis</h3><div class="tech">BioPython · NumPy · Pandas · ML</div><p>Developed a genomic hybridization simulation framework using DNA sequence merging algorithms and predictive biological modelling techniques.</p><div class="tags"><span>Computational Biology</span><span>BioPython</span><span>ML</span></div></div></div>
+                <div class="project-card reveal"><div class="glass"><div class="icon">🔷</div><h3>LID‑R – AI‑Based Object Reshaper</h3><div class="tech">AI · Machine Learning · Mathematical Modeling</div><p>Designed an AI‑driven system for adaptive reshaping and transformation of geometric and mathematical 3D structures using machine learning techniques.</p><div class="tags"><span>3D</span><span>Mathematical Modeling</span></div></div></div>
+                <div class="project-card reveal"><div class="glass"><div class="icon">📷</div><h3>REGICAM – ML Attendance System</h3><div class="tech">Python · CNN · Computer Vision · NumPy · Pandas</div><p>Developed a CCTV‑based attendance system using CNN‑powered facial recognition for real‑time identity detection and automated attendance tracking.</p><div class="tags"><span>Computer Vision</span><span>CNN</span></div></div></div>
+                <div class="project-card reveal"><div class="glass"><div class="icon">🛡️</div><h3>AI Campus Security System</h3><div class="tech">AI · Computer Vision · Machine Learning</div><p>Built an intelligent surveillance platform for anomaly, intrusion, and suspicious activity detection from CCTV feeds using machine learning techniques.</p><div class="tags"><span>Security</span><span>Anomaly Detection</span></div></div></div>
+                <div class="project-card reveal"><div class="glass"><div class="icon">🧠</div><h3>NeurAI (till software prototype)</h3><div class="tech">Python · PyTorch · React · TypeScript · MQTT · ML</div><p>Engineered an end‑to‑end brain‑computer interface (BCI) platform using Raspberry Pi and BioAmp sensors to capture real‑time EEG/EMG signals, leveraging PyTorch‑based deep learning models for neural signal decoding and real‑time text generation through React and MQTT‑based communication systems.</p><div class="tags"><span>BCI</span><span>EEG</span><span>PyTorch</span></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PUBLICATIONS -->
+    <section id="publications" style="background:rgba(255,255,255,0.005);">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Publications</span></div>
+            <h2 class="section-title reveal">Research <span>papers</span></h2>
+            <div class="project-grid">
+                <div class="project-card reveal"><div class="glass"><div style="display:flex; gap:10px; align-items:center; margin-bottom:6px; flex-wrap:wrap;"><span style="background:var(--primary); color:#000; padding:2px 14px; border-radius:60px; font-size:0.65rem; font-weight:600;">2025</span><span style="color:var(--text-secondary); font-size:0.75rem;">Web 6.0 &amp; Industry 6.0</span></div><h3>Multi‑Modal AI for Mental Health Prediction and Intervention</h3><p style="color:var(--text-secondary); font-size:0.9rem; margin-top:6px;">A multimodal AI framework combining text, behavioral, and emotional data for early mental health assessment and intervention.</p></div></div>
+                <div class="project-card reveal"><div class="glass"><div style="display:flex; gap:10px; align-items:center; margin-bottom:6px; flex-wrap:wrap;"><span style="background:var(--primary); color:#000; padding:2px 14px; border-radius:60px; font-size:0.65rem; font-weight:600;">2025</span><span style="color:var(--text-secondary); font-size:0.75rem;">Prantik Gabeshana Patrika (ISSN 2583-6706)</span></div><h3>LID‑R: AI‑Based Object Reshaper</h3><p style="color:var(--text-secondary); font-size:0.9rem; margin-top:6px;">An AI‑driven system for adaptive reshaping and transformation of geometric and mathematical 3D structures using machine learning techniques.</p></div></div>
+                <div class="project-card reveal"><div class="glass"><div style="display:flex; gap:10px; align-items:center; margin-bottom:6px; flex-wrap:wrap;"><span style="background:var(--primary); color:#000; padding:2px 14px; border-radius:60px; font-size:0.65rem; font-weight:600;">2026</span><span style="color:var(--text-secondary); font-size:0.75rem;">IEEE ICAECT 2026</span></div><h3>GenX: AI‑Powered Genomic Hybridization Analysis and Prediction</h3><p style="color:var(--text-secondary); font-size:0.9rem; margin-top:6px;">A genomic hybridization simulation framework using DNA sequence merging algorithms and predictive biological modelling techniques.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section id="awards">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Awards</span></div>
+            <h2 class="section-title reveal">Recognition</h2>
+            <div class="award-grid">
+                <div class="award-card reveal"><div class="glass"><div class="icon">🏆</div><div><h4>1st Runner‑Up – HACK‑A‑BIT Pan‑India Hackathon</h4><p>BIT Mesra</p></div></div></div>
+                <div class="award-card reveal"><div class="glass"><div class="icon">👑</div><div><h4>Chancellor's Award for Technical Contribution to the University</h4><p>CSE (AI &amp; ML), 2025</p></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications" style="background:rgba(255,255,255,0.005);">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Certifications</span></div>
+            <h2 class="section-title reveal">Continuous <span>learning</span></h2>
+            <div class="glass" style="padding:36px; border-radius:28px;">
+                <div class="cert-grid">
+                    <span class="cert-item">NPTEL – Artificial Intelligence in Industrial Fields</span>
+                    <span class="cert-item">NPTEL – Developing Soft Skills</span>
+                    <span class="cert-item">Goldman Sachs – Operations Job Simulation</span>
+                    <span class="cert-item">Programming Foundations – Coursera</span>
+                    <span class="cert-item">Introduction to Generative AI – Coursera</span>
+                    <span class="cert-item">Machine Learning with Python – Coursera</span>
+                    <span class="cert-item">Cyber Security Fundamentals – University of London</span>
+                    <span class="cert-item">Gen AI Agents: Transform Your Organization – Google Cloud (Coursera) 2026</span>
+                    <span class="cert-item">Gen AI: Navigate the Landscape – Google Cloud (Coursera) 2026</span>
+                    <span class="cert-item">Transformer Models and BERT Model – Google Cloud (Coursera) 2026</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORKSHOPS -->
+    <section id="workshops">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Workshops &amp; Seminars</span></div>
+            <h2 class="section-title reveal">Professional <span>development</span></h2>
+            <div class="glass" style="padding:32px; border-radius:28px;">
+                <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">IoT Security FDP – IIT Guwahati &amp; IEM Kolkata</span>
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">Next‑Generation Cyber Defense Bootcamp – IEM Kolkata</span>
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">ROBO‑RACE &amp; ROBO‑SOCCER Workshop</span>
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">Cloud Computing Workshop – CSI UEM</span>
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">International Conference on Web 6.0 and Industry 6.0</span>
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">IEEE ICAECT 2026</span>
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">Research Promotion Workshop – ACMU, ISI Kolkata</span>
+                    <span class="cert-item" style="border-color:rgba(0,240,192,0.12);">IIT KGP Research Park – Demonstration of Self‑Developed Psychological pre‑screening tool (Team Leader, IEM Research Lab)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="background:rgba(255,255,255,0.005);">
+        <div class="container">
+            <div class="reveal"><span class="section-label">Connect</span></div>
+            <h2 class="section-title reveal">Let's build something <span>extraordinary</span></h2>
+            <div class="contact-grid">
+                <div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">Email</div><a href="mailto:szd0238@gmail.com">szd0238@gmail.com</a></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">LinkedIn</div><a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank">linkedin.com/in/saphalya-das</a></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.29-1.552 3.297-1.23 3.297-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.694.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">GitHub</div><a href="https://github.com/Zis440" target="_blank">github.com/Zis440</a></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">Location</div><span style="color:var(--text-secondary);">Kolkata, India</span></div>
+                    </div>
+                </div>
+                <div class="glass" style="padding:32px; border-radius:28px;">
+                    <h4 style="font-size:1.1rem; margin-bottom:16px;">Send a message</h4>
+                    <form class="contact-form" id="contactForm">
+                        <input type="text" placeholder="Name" required />
+                        <input type="email" placeholder="Email" required />
+                        <textarea placeholder="Message" required></textarea>
+                        <button type="submit" class="btn btn-primary magnetic" style="width:100%; justify-content:center;">Send Message</button>
+                        <div id="formStatus" style="margin-top:12px; color:var(--primary); display:none;">✓ Message sent successfully!</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-inner">
+                <div><span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; background:linear-gradient(135deg,var(--primary),var(--accent),var(--primary)); background-size:200% 200%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:gradShift 4s ease-in-out infinite;">SAPHALYA</span><span style="color:var(--text-secondary); font-size:0.85rem; margin-left:12px;">AI Researcher &amp; ML Engineer</span></div>
+                <div class="footer-socials">
+                    <a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    <a href="https://github.com/Zis440" target="_blank" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.29-1.552 3.297-1.23 3.297-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.694.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                    </a>
+                    <a href="mailto:szd0238@gmail.com" aria-label="Email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,0.03); margin-top:32px; padding-top:24px; text-align:center; color:var(--text-secondary); font-size:0.8rem; letter-spacing:0.3px;">© 2026 Saphalya Das. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- back to top -->
+    <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+
+    <!-- External Libraries (loaded async to avoid blocking) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- OGL library for WebGL effects – primary CDN with fallback -->
+    <script>
+        // Load OGL with fallback CDNs
+        (function loadOGL() {
+            var scripts = [
+                'https://unpkg.com/ogl@0.0.35/dist/ogl.min.js',
+                'https://cdn.jsdelivr.net/npm/ogl@0.0.35/dist/ogl.min.js'
+            ];
+            var loaded = false;
+            var idx = 0;
+
+            function tryLoad() {
+                if (idx >= scripts.length) {
+                    console.warn('OGL: all CDN sources failed. WebGL backgrounds will be disabled.');
+                    return;
+                }
+                var s = document.createElement('script');
+                s.src = scripts[idx];
+                s.onload = function() {
+                    loaded = true;
+                    console.log('OGL loaded from:', scripts[idx]);
+                    initAllEffects();
+                };
+                s.onerror = function() {
+                    idx++;
+                    tryLoad();
+                };
+                document.head.appendChild(s);
+            }
+            tryLoad();
+            // Expose init function globally
+            window._oglReady = function(cb) {
+                if (typeof OGL !== 'undefined') { cb(); return; }
+                var check = setInterval(function() {
+                    if (typeof OGL !== 'undefined') { clearInterval(check);
+                        cb(); }
+                }, 50);
+            };
+            window._initAllEffects = initAllEffects;
+        })();
+
+        function initAllEffects() {
+            initAurora();
+            initPlasma();
+            initParticles();
+        }
+
+        // ---------- AURORA (SoftAurora) ----------
+        function initAurora() {
+            var container = document.getElementById('aurora-container');
+            if (!container) return;
+            if (typeof OGL === 'undefined') {
+                container.style.display = 'none';
+                return;
+            }
+
+            try {
+                var OGL_Renderer = OGL.Renderer,
+                    OGL_Program = OGL.Program,
+                    OGL_Mesh = OGL.Mesh,
+                    OGL_Triangle = OGL.Triangle;
+
+                var renderer = new OGL_Renderer({ alpha: true, premultipliedAlpha: false });
+                var gl = renderer.gl;
+                gl.clearColor(0, 0, 0, 0);
+
+                var vertexShader = [
+                    'attribute vec2 uv;',
+                    'attribute vec2 position;',
+                    'varying vec2 vUv;',
+                    'void main() {',
+                    '  vUv = uv;',
+                    '  gl_Position = vec4(position, 0, 1);',
+                    '}'
+                ].join('\n');
+
+                var fragmentShader = [
+                    'precision highp float;',
+                    'uniform float uTime;',
+                    'uniform vec3 uResolution;',
+                    'uniform float uSpeed;',
+                    'uniform float uScale;',
+                    'uniform float uBrightness;',
+                    'uniform vec3 uColor1;',
+                    'uniform vec3 uColor2;',
+                    'uniform float uNoiseFreq;',
+                    'uniform float uNoiseAmp;',
+                    'uniform float uBandHeight;',
+                    'uniform float uBandSpread;',
+                    'uniform float uOctaveDecay;',
+                    'uniform float uLayerOffset;',
+                    'uniform float uColorSpeed;',
+                    'uniform vec2 uMouse;',
+                    'uniform float uMouseInfluence;',
+                    'uniform bool uEnableMouse;',
+                    'varying vec2 vUv;',
+                    '#define TAU 6.28318',
+                    '',
+                    'vec3 gradientHash(vec3 p) {',
+                    '  p = vec3(dot(p, vec3(127.1, 311.7, 234.6)), dot(p, vec3(269.5, 183.3, 198.3)), dot(p, vec3(169.5, 283.3, 156.9)));',
+                    '  vec3 h = fract(sin(p) * 43758.5453123);',
+                    '  float phi = acos(2.0 * h.x - 1.0);',
+                    '  float theta = TAU * h.y;',
+                    '  return vec3(cos(theta) * sin(phi), sin(theta) * cos(phi), cos(phi));',
+                    '}',
+                    '',
+                    'float quinticSmooth(float t) {',
+                    '  float t2 = t * t;',
+                    '  float t3 = t * t2;',
+                    '  return 6.0 * t3 * t2 - 15.0 * t2 * t2 + 10.0 * t3;',
+                    '}',
+                    '',
+                    'vec3 cosineGradient(float t, vec3 a, vec3 b, vec3 c, vec3 d) {',
+                    '  return a + b * cos(TAU * (c * t + d));',
+                    '}',
+                    '',
+                    'float perlin3D(float amplitude, float frequency, float px, float py, float pz) {',
+                    '  float x = px * frequency;',
+                    '  float y = py * frequency;',
+                    '  float fx = floor(x); float fy = floor(y); float fz = floor(pz);',
+                    '  float cx = ceil(x);  float cy = ceil(y);  float cz = ceil(pz);',
+                    '  vec3 g000 = gradientHash(vec3(fx, fy, fz));',
+                    '  vec3 g100 = gradientHash(vec3(cx, fy, fz));',
+                    '  vec3 g010 = gradientHash(vec3(fx, cy, fz));',
+                    '  vec3 g110 = gradientHash(vec3(cx, cy, fz));',
+                    '  vec3 g001 = gradientHash(vec3(fx, fy, cz));',
+                    '  vec3 g101 = gradientHash(vec3(cx, fy, cz));',
+                    '  vec3 g011 = gradientHash(vec3(fx, cy, cz));',
+                    '  vec3 g111 = gradientHash(vec3(cx, cy, cz));',
+                    '  float d000 = dot(g000, vec3(x - fx, y - fy, pz - fz));',
+                    '  float d100 = dot(g100, vec3(x - cx, y - fy, pz - fz));',
+                    '  float d010 = dot(g010, vec3(x - fx, y - cy, pz - fz));',
+                    '  float d110 = dot(g110, vec3(x - cx, y - cy, pz - fz));',
+                    '  float d001 = dot(g001, vec3(x - fx, y - fy, pz - cz));',
+                    '  float d101 = dot(g101, vec3(x - cx, y - fy, pz - cz));',
+                    '  float d011 = dot(g011, vec3(x - fx, y - cy, pz - cz));',
+                    '  float d111 = dot(g111, vec3(x - cx, y - cy, pz - cz));',
+                    '  float sx = quinticSmooth(x - fx);',
+                    '  float sy = quinticSmooth(y - fy);',
+                    '  float sz = quinticSmooth(pz - fz);',
+                    '  float lx00 = mix(d000, d100, sx);',
+                    '  float lx10 = mix(d010, d110, sx);',
+                    '  float lx01 = mix(d001, d101, sx);',
+                    '  float lx11 = mix(d011, d111, sx);',
+                    '  float ly0 = mix(lx00, lx10, sy);',
+                    '  float ly1 = mix(lx01, lx11, sy);',
+                    '  return amplitude * mix(ly0, ly1, sz);',
+                    '}',
+                    '',
+                    'float auroraGlow(float t, vec2 shift) {',
+                    '  vec2 uv = gl_FragCoord.xy / uResolution.y;',
+                    '  uv += shift;',
+                    '  float noiseVal = 0.0;',
+                    '  float freq = uNoiseFreq;',
+                    '  float amp = uNoiseAmp;',
+                    '  vec2 samplePos = uv * uScale;',
+                    '  for (float i = 0.0; i < 3.0; i += 1.0) {',
+                    '    noiseVal += perlin3D(amp, freq, samplePos.x, samplePos.y, t);',
+                    '    amp *= uOctaveDecay;',
+                    '    freq *= 2.0;',
+                    '  }',
+                    '  float yBand = uv.y * 10.0 - uBandHeight * 10.0;',
+                    '  return 0.3 * max(exp(uBandSpread * (1.0 - 1.1 * abs(noiseVal + yBand))), 0.0);',
+                    '}',
+                    '',
+                    'void main() {',
+                    '  vec2 uv = gl_FragCoord.xy / uResolution.xy;',
+                    '  float t = uSpeed * 0.4 * uTime;',
+                    '  vec2 shift = vec2(0.0);',
+                    '  if (uEnableMouse) { shift = (uMouse - 0.5) * uMouseInfluence; }',
+                    '  vec3 col = vec3(0.0);',
+                    '  col += 0.99 * auroraGlow(t, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.2 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3, 0.20, 0.20)) * uColor1;',
+                    '  col += 0.99 * auroraGlow(t + uLayerOffset, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.1 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0, 1.0, 0.0), vec3(0.5, 0.20, 0.25)) * uColor2;',
+                    '  col *= uBrightness;',
+                    '  float alpha = clamp(length(col), 0.0, 1.0);',
+                    '  gl_FragColor = vec4(col, alpha);',
+                    '}'
+                ].join('\n');
+
+                function hexToVec3(h) {
+                    var hex = h.replace('#', '');
+                    return [
+                        parseInt(hex.slice(0, 2), 16) / 255,
+                        parseInt(hex.slice(2, 4), 16) / 255,
+                        parseInt(hex.slice(4, 6), 16) / 255
+                    ];
+                }
+
+                var geometry = new OGL_Triangle(gl);
+                var program = new OGL_Program(gl, {
+                    vertex: vertexShader,
+                    fragment: fragmentShader,
+                    uniforms: {
+                        uTime: { value: 0 },
+                        uResolution: { value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height] },
+                        uSpeed: { value: 0.5 },
+                        uScale: { value: 1.3 },
+                        uBrightness: { value: 1.0 },
+                        uColor1: { value: hexToVec3('#00f0c0') },
+                        uColor2: { value: hexToVec3('#d946ef') },
+                        uNoiseFreq: { value: 2.2 },
+                        uNoiseAmp: { value: 0.9 },
+                        uBandHeight: { value: 0.45 },
+                        uBandSpread: { value: 0.9 },
+                        uOctaveDecay: { value: 0.12 },
+                        uLayerOffset: { value: 0.3 },
+                        uColorSpeed: { value: 1.2 },
+                        uMouse: { value: new Float32Array([0.5, 0.5]) },
+                        uMouseInfluence: { value: 0.2 },
+                        uEnableMouse: { value: true }
+                    }
+                });
+
+                var mesh = new OGL_Mesh(gl, { geometry: geometry, program: program });
+                container.appendChild(gl.canvas);
+
+                var targetMouse = [0.5, 0.5];
+                var currentMouse = [0.5, 0.5];
+
+                function handleMove(e) {
+                    var rect = gl.canvas.getBoundingClientRect();
+                    targetMouse = [
+                        (e.clientX - rect.left) / rect.width,
+                        1.0 - (e.clientY - rect.top) / rect.height
+                    ];
+                }
+
+                function handleLeave() { targetMouse = [0.5, 0.5]; }
+                gl.canvas.addEventListener('mousemove', handleMove);
+                gl.canvas.addEventListener('mouseleave', handleLeave);
+
+                function resize() {
+                    var w = container.offsetWidth || window.innerWidth;
+                    var h = container.offsetHeight || window.innerHeight;
+                    renderer.setSize(w, h);
+                    program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas
+                        .height
+                    ];
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                var frame;
+
+                function animate(time) {
+                    frame = requestAnimationFrame(animate);
+                    program.uniforms.uTime.value = time * 0.001;
+                    currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
+                    currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
+                    program.uniforms.uMouse.value[0] = currentMouse[0];
+                    program.uniforms.uMouse.value[1] = currentMouse[1];
+                    renderer.render({ scene: mesh });
+                }
+                requestAnimationFrame(animate);
+                console.log('Aurora WebGL initialized successfully');
+            } catch (e) {
+                console.warn('Aurora WebGL initialization failed:', e.message);
+                container.style.display = 'none';
+            }
+        }
+
+        // ---------- PLASMA (WebGL1 compatible) ----------
+        function initPlasma() {
+            var container = document.getElementById('plasma-container');
+            if (!container) return;
+            if (typeof OGL === 'undefined') {
+                container.style.display = 'none';
+                return;
+            }
+
+            try {
+                var OGL_Renderer = OGL.Renderer,
+                    OGL_Program = OGL.Program,
+                    OGL_Mesh = OGL.Mesh,
+                    OGL_Triangle = OGL.Triangle;
+
+                var renderer = new OGL_Renderer({ alpha: true, premultipliedAlpha: false });
+                var gl = renderer.gl;
+                gl.clearColor(0, 0, 0, 0);
+
+                // WebGL1 compatible vertex shader
+                var vertexShader = [
+                    'precision highp float;',
+                    'attribute vec2 position;',
+                    'attribute vec2 uv;',
+                    'varying vec2 vUv;',
+                    'void main() {',
+                    '  vUv = uv;',
+                    '  gl_Position = vec4(position, 0.0, 1.0);',
+                    '}'
+                ].join('\n');
+
+                // WebGL1 compatible fragment shader (converted from #version 300 es)
+                var fragmentShader = [
+                    'precision highp float;',
+                    'uniform vec2 iResolution;',
+                    'uniform float iTime;',
+                    'uniform vec3 uCustomColor;',
+                    'uniform float uUseCustomColor;',
+                    'uniform float uSpeed;',
+                    'uniform float uDirection;',
+                    'uniform float uScale;',
+                    'uniform float uOpacity;',
+                    'uniform vec2 uMouse;',
+                    'uniform float uMouseInteractive;',
+                    'varying vec2 vUv;',
+                    '',
+                    'bool finite1(float x) { return !(x != x || abs(x) > 1e30); }',
+                    'vec3 sanitize(vec3 c) {',
+                    '  return vec3(',
+                    '    finite1(c.r) ? c.r : 0.0,',
+                    '    finite1(c.g) ? c.g : 0.0,',
+                    '    finite1(c.b) ? c.b : 0.0',
+                    '  );',
+                    '}',
+                    '',
+                    'vec3 tanh3(vec3 x) {',
+                    '  vec3 e = exp(2.0 * x);',
+                    '  return (e - 1.0) / (e + 1.0);',
+                    '}',
+                    '',
+                    'vec4 mainImage(vec2 C) {',
+                    '  vec2 center = iResolution.xy * 0.5;',
+                    '  C = (C - center) / uScale + center;',
+                    '  vec2 mouseOffset = (uMouse - center) * 0.0002;',
+                    '  C += mouseOffset * length(C - center) * step(0.5, uMouseInteractive);',
+                    '  vec4 o = vec4(0.0);',
+                    '  float i = 0.0;',
+                    '  float d = 0.0;',
+                    '  float z = 0.0;',
+                    '  float T = iTime * uSpeed * uDirection;',
+                    '  vec3 O = vec3(0.0);',
+                    '  vec3 p;',
+                    '  vec3 S;',
+                    '  vec2 r = iResolution.xy;',
+                    '  vec2 Q;',
+                    '  for (float iter = 0.0; iter < 60.0; iter += 1.0) {',
+                    '    p = z * normalize(vec3(C - 0.5 * r, r.y));',
+                    '    p.z -= 4.0;',
+                    '    S = p;',
+                    '    d = p.y - T;',
+                    '    p.x += 0.4 * (1.0 + p.y) * sin(d + p.x * 0.1) * cos(0.34 * d + p.x * 0.05);',
+                    '    Q = p.xz * mat2(cos(p.y + vec4(0.0, 11.0, 33.0, 0.0) - T));',
+                    '    z += d = abs(sqrt(length(Q * Q)) - 0.25 * (5.0 + S.y)) / 3.0 + 8e-4;',
+                    '    o = 1.0 + sin(S.y + p.z * 0.5 + S.z - length(S - p) + vec4(2.0, 1.0, 0.0, 8.0));',
+                    '    O += o.w / d * o.xyz;',
+                    '  }',
+                    '  return vec4(tanh3(O / 1e4), 1.0);',
+                    '}',
+                    '',
+                    'void main() {',
+                    '  vec4 o = mainImage(gl_FragCoord.xy);',
+                    '  vec3 rgb = sanitize(o.rgb);',
+                    '  float intensity = (rgb.r + rgb.g + rgb.b) / 3.0;',
+                    '  vec3 customColor = intensity * uCustomColor;',
+                    '  vec3 finalColor = mix(rgb, customColor, step(0.5, uUseCustomColor));',
+                    '  float alpha = length(rgb) * uOpacity;',
+                    '  gl_FragColor = vec4(finalColor, alpha);',
+                    '}'
+                ].join('\n');
+
+                var customColor = [0.0, 0.9, 0.75];
+                var useCustom = 1.0;
+
+                var geometry = new OGL_Triangle(gl);
+                var program = new OGL_Program(gl, {
+                    vertex: vertexShader,
+                    fragment: fragmentShader,
+                    uniforms: {
+                        iTime: { value: 0 },
+                        iResolution: { value: new Float32Array([1, 1]) },
+                        uCustomColor: { value: new Float32Array(customColor) },
+                        uUseCustomColor: { value: useCustom },
+                        uSpeed: { value: 0.5 },
+                        uDirection: { value: 1.0 },
+                        uScale: { value: 1.2 },
+                        uOpacity: { value: 0.35 },
+                        uMouse: { value: new Float32Array([0, 0]) },
+                        uMouseInteractive: { value: 1.0 }
+                    }
+                });
+
+                var mesh = new OGL_Mesh(gl, { geometry: geometry, program: program });
+                container.appendChild(gl.canvas);
+
+                var mousePos = { x: 0, y: 0 };
+
+                function handleMove(e) {
+                    var rect = container.getBoundingClientRect();
+                    mousePos.x = e.clientX - rect.left;
+                    mousePos.y = e.clientY - rect.top;
+                    var m = program.uniforms.uMouse.value;
+                    m[0] = mousePos.x;
+                    m[1] = mousePos.y;
+                }
+                container.addEventListener('mousemove', handleMove);
+
+                function resize() {
+                    var w = container.offsetWidth || window.innerWidth;
+                    var h = container.offsetHeight || window.innerHeight;
+                    renderer.setSize(w, h);
+                    var res = program.uniforms.iResolution.value;
+                    res[0] = gl.drawingBufferWidth;
+                    res[1] = gl.drawingBufferHeight;
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                var frame;
+
+                function animate(time) {
+                    frame = requestAnimationFrame(animate);
+                    program.uniforms.iTime.value = time * 0.001;
+                    renderer.render({ scene: mesh });
+                }
+                requestAnimationFrame(animate);
+                console.log('Plasma WebGL initialized successfully');
+            } catch (e) {
+                console.warn('Plasma WebGL initialization failed:', e.message);
+                container.style.display = 'none';
+            }
+        }
+
+        // ---------- FLOATING PARTICLE SYSTEM ----------
+        function initParticles() {
+            var canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            var particles = [];
+            var particleCount = 60;
+            var connectionDist = 120;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (var i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 2 + 0.8,
+                    opacity: Math.random() * 0.5 + 0.2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var i, j, p, q, dx, dy, dist;
+
+                for (i = 0; i < particleCount; i++) {
+                    p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0,240,192,' + p.opacity + ')';
+                    ctx.fill();
+
+                    for (j = i + 1; j < particleCount; j++) {
+                        q = particles[j];
+                        dx = p.x - q.x;
+                        dy = p.y - q.y;
+                        dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < connectionDist) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(q.x, q.y);
+                            ctx.strokeStyle = 'rgba(0,240,192,' + (0.08 * (1 - dist / connectionDist)) + ')';
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+            console.log('Particle system initialized');
+        }
+
+        // ---------- CUSTOM CURSOR ----------
+        (function cursor() {
+            var dot = document.getElementById('cursorDot');
+            if (!dot) return;
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                dot.style.display = 'none';
+                return;
+            }
+            var mx = 0,
+                my = 0,
+                px = 0,
+                py = 0;
+
+            document.addEventListener('mousemove', function(e) {
+                mx = e.clientX;
+                my = e.clientY;
+                if (dot.style.display === 'none') dot.style.display = 'block';
+            });
+            document.addEventListener('mouseleave', function() { dot.style.display = 'none'; });
+
+            function loop() {
+                px += (mx - px) * 0.12;
+                py += (my - py) * 0.12;
+                dot.style.transform = 'translate(' + px + 'px, ' + py + 'px)';
+                requestAnimationFrame(loop);
+            }
+            loop();
+
+            var hoverTargets = document.querySelectorAll('a, .btn, .skill-chip, .cert-item, .glass, .project-card, .award-card');
+            hoverTargets.forEach(function(el) {
+                el.addEventListener('mouseenter', function() { dot.classList.add('hover'); });
+                el.addEventListener('mouseleave', function() { dot.classList.remove('hover'); });
+            });
+        })();
+
+        // ---------- MAGNETIC BUTTONS ----------
+        (function magnetic() {
+            var buttons = document.querySelectorAll('.magnetic');
+            buttons.forEach(function(btn) {
+                btn.addEventListener('mousemove', function(e) {
+                    var rect = btn.getBoundingClientRect();
+                    var x = e.clientX - rect.left - rect.width / 2;
+                    var y = e.clientY - rect.top - rect.height / 2;
+                    var strength = 0.25;
+                    var moveX = x * strength;
+                    var moveY = y * strength;
+                    btn.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)';
+                    btn.style.transition = 'transform 0.15s ease-out';
+                });
+                btn.addEventListener('mouseleave', function() {
+                    btn.style.transform = 'translate(0px, 0px)';
+                    btn.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+                });
+            });
+        })();
+
+        // ---------- NAVBAR ----------
+        (function navbar() {
+            var nav = document.getElementById('navbar');
+            var links = document.querySelectorAll('.nav-links a');
+            var sections = document.querySelectorAll('section[id]');
+
+            function updateNav() {
+                if (window.scrollY > 50) nav.classList.add('shrink');
+                else nav.classList.remove('shrink');
+
+                var current = '';
+                sections.forEach(function(sec) {
+                    var top = sec.offsetTop - 100;
+                    if (window.scrollY >= top) current = sec.getAttribute('id');
+                });
+                links.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+                });
+            }
+            window.addEventListener('scroll', updateNav);
+            updateNav();
+        })();
+
+        // ---------- REVEAL ----------
+        (function reveal() {
+            var els = document.querySelectorAll('.reveal');
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+            els.forEach(function(el) { observer.observe(el); });
+        })();
+
+        // ---------- STATS ----------
+        (function stats() {
+            var targets = { statProjects: 5, statPubs: 3, statAwards: 2, statExp: 2 };
+            var els = {};
+            for (var id in targets) {
+                var el = document.getElementById(id);
+                if (el) els[id] = { el: el, val: targets[id], current: 0 };
+            }
+            var started = false;
+
+            function animateStats() {
+                var any = false;
+                for (var key in els) {
+                    var o = els[key];
+                    if (o.current < o.val) {
+                        o.current += Math.ceil((o.val - o.current) / 8) + 0.3;
+                        if (o.current > o.val) o.current = o.val;
+                        o.el.textContent = Math.floor(o.current);
+                        any = true;
+                    }
+                }
+                if (any) requestAnimationFrame(animateStats);
+            }
+
+            var observer = new IntersectionObserver(function(entries) {
+                if (entries.some(function(e) { return e.isIntersecting; }) && !started) {
+                    started = true;
+                    animateStats();
+                }
+            }, { threshold: 0.15 });
+            var hero = document.querySelector('#hero');
+            if (hero) observer.observe(hero);
+        })();
+
+        // ---------- BACK TO TOP ----------
+        (function backTop() {
+            var btn = document.getElementById('backTop');
+            if (!btn) return;
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 500) btn.classList.add('visible');
+                else btn.classList.remove('visible');
+            });
+            btn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+
+        // ---------- CONTACT FORM ----------
+        (function form() {
+            var form = document.getElementById('contactForm');
+            if (!form) return;
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var status = document.getElementById('formStatus');
+                if (status) {
+                    status.style.display = 'block';
+                    setTimeout(function() { status.style.display = 'none'; }, 4000);
+                }
+                form.reset();
+            });
+        })();
+
+        // ---------- SMOOTH ANCHOR ----------
+        (function smoothAnchors() {
+            document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+                a.addEventListener('click', function(e) {
+                    var target = document.querySelector(a.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        var top = target.offsetTop - 70;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    }
+                });
+            });
+        })();
+
+        // ---------- INIT EXTERNAL LIBRARIES ----------
+        (function initLibs() {
+            // Lenis Smooth Scrolling
+            if (typeof Lenis !== 'undefined') {
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smooth: true
+                });
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+            }
+
+            // GSAP ScrollTrigger
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                // Optional: sync GSAP with Lenis if needed
+            }
+
+            // Lucide Icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        })();
+
+        console.log('%c🧠 Saphalya Das · AI Researcher · Portfolio Ready', 'font-size:20px; font-weight:bold; color:#00f0c0;');
+    </script>
+</body>
+</html>
