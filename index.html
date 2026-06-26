@@ -53,6 +53,17 @@
             color: #000;
         }
 
+        /* ----- Aurora background (WebGL) ----- */
+        #aurora-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         /* ----- canvas (particles) ----- */
         #particles-canvas {
             position: fixed;
@@ -62,7 +73,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 0.4;
         }
 
         /* ----- custom cursor (hidden on mobile) ----- */
@@ -686,8 +697,20 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
         .contact-info-item .icon {
-            font-size: 1.2rem;
             width: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-info-item .icon svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--text-secondary);
+            transition: fill 0.3s;
+        }
+        .contact-info-item:hover .icon svg {
+            fill: var(--primary);
         }
         .contact-info-item a {
             color: var(--text);
@@ -747,11 +770,18 @@
         .footer-socials a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 1.2rem;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
         }
-        .footer-socials a:hover {
-            color: var(--primary);
+        .footer-socials a svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-secondary);
+            transition: fill 0.3s;
+        }
+        .footer-socials a:hover svg {
+            fill: var(--primary);
         }
 
         /* ----- back to top ----- */
@@ -820,7 +850,6 @@
         /*              RESPONSIVE – MOBILE FIRST ADJUSTMENTS             */
         /* ============================================================ */
 
-        /* large tablets & small laptops */
         @media (max-width: 1024px) {
             .hero-grid {
                 grid-template-columns: 1fr;
@@ -872,7 +901,6 @@
             }
         }
 
-        /* tablets & large phones */
         @media (max-width: 768px) {
             .navbar {
                 padding: 8px 16px;
@@ -955,7 +983,6 @@
             }
         }
 
-        /* small phones */
         @media (max-width: 480px) {
             .container {
                 padding: 0 16px;
@@ -1105,12 +1132,12 @@
             .footer-inner {
                 gap: 12px;
             }
-            .footer-socials a {
-                font-size: 1rem;
+            .footer-socials a svg {
+                width: 20px;
+                height: 20px;
             }
         }
 
-        /* extra small (very tiny phones) */
         @media (max-width: 360px) {
             .nav-links {
                 gap: 0.3rem;
@@ -1140,6 +1167,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Aurora background (WebGL) -->
+    <div id="aurora-container"></div>
 
     <!-- particles -->
     <canvas id="particles-canvas"></canvas>
@@ -1439,10 +1469,30 @@
             <h2 class="section-title reveal">Let's build something <span>extraordinary</span></h2>
             <div class="contact-grid">
                 <div>
-                    <div class="contact-info-item"><span class="icon">📧</span><div><div style="font-weight:500;">Email</div><a href="mailto:szd0238@gmail.com">szd0238@gmail.com</a></div></div>
-                    <div class="contact-info-item"><span class="icon">🔗</span><div><div style="font-weight:500;">LinkedIn</div><a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank">linkedin.com/in/saphalya-das</a></div></div>
-                    <div class="contact-info-item"><span class="icon">🐙</span><div><div style="font-weight:500;">GitHub</div><a href="https://github.com/Zis440" target="_blank">github.com/Zis440</a></div></div>
-                    <div class="contact-info-item"><span class="icon">📍</span><div><div style="font-weight:500;">Location</div><span style="color:var(--text-secondary);">Kolkata, India</span></div></div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">Email</div><a href="mailto:szd0238@gmail.com">szd0238@gmail.com</a></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">LinkedIn</div><a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank">linkedin.com/in/saphalya-das</a></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.29-1.552 3.297-1.23 3.297-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.694.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">GitHub</div><a href="https://github.com/Zis440" target="_blank">github.com/Zis440</a></div>
+                    </div>
+                    <div class="contact-info-item">
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </span>
+                        <div><div style="font-weight:500;">Location</div><span style="color:var(--text-secondary);">Kolkata, India</span></div>
+                    </div>
                 </div>
                 <div class="glass" style="padding:28px;">
                     <h4 style="font-size:1.1rem; margin-bottom:14px;">Send a message</h4>
@@ -1464,9 +1514,15 @@
             <div class="footer-inner">
                 <div><span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">SAPHALYA</span><span style="color:var(--text-secondary); font-size:0.85rem; margin-left:10px;">AI Researcher &amp; ML Engineer</span></div>
                 <div class="footer-socials">
-                    <a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank" aria-label="LinkedIn">🔗</a>
-                    <a href="https://github.com/Zis440" target="_blank" aria-label="GitHub">🐙</a>
-                    <a href="mailto:szd0238@gmail.com" aria-label="Email">📧</a>
+                    <a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    <a href="https://github.com/Zis440" target="_blank" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.29-1.552 3.297-1.23 3.297-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.694.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                    </a>
+                    <a href="mailto:szd0238@gmail.com" aria-label="Email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </a>
                 </div>
             </div>
             <div style="border-top:1px solid rgba(255,255,255,0.04); margin-top:28px; padding-top:20px; text-align:center; color:var(--text-secondary); font-size:0.8rem;">© 2026 Saphalya Das. All rights reserved.</div>
@@ -1476,18 +1532,258 @@
     <!-- back to top -->
     <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
+    <!-- OGL library for Aurora -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ogl/0.0.35/ogl.min.js"></script>
+
     <script>
         (function() {
             'use strict';
 
-            // ---------- particles ----------
+            // ---------- Aurora (SoftAurora) ----------
+            (function aurora() {
+                const container = document.getElementById('aurora-container');
+                if (!container) return;
+
+                // Check if OGL is loaded
+                if (typeof OGL === 'undefined') {
+                    console.warn('OGL not loaded, skipping aurora');
+                    return;
+                }
+
+                const { Renderer, Program, Mesh, Triangle } = OGL;
+
+                const renderer = new Renderer({ alpha: true, premultipliedAlpha: false });
+                const gl = renderer.gl;
+                gl.clearColor(0, 0, 0, 0);
+
+                // Shaders (same as React component)
+                const vertexShader = `
+                attribute vec2 uv;
+                attribute vec2 position;
+                varying vec2 vUv;
+                void main() {
+                  vUv = uv;
+                  gl_Position = vec4(position, 0, 1);
+                }
+              `;
+
+                const fragmentShader = `
+                precision highp float;
+
+                uniform float uTime;
+                uniform vec3 uResolution;
+                uniform float uSpeed;
+                uniform float uScale;
+                uniform float uBrightness;
+                uniform vec3 uColor1;
+                uniform vec3 uColor2;
+                uniform float uNoiseFreq;
+                uniform float uNoiseAmp;
+                uniform float uBandHeight;
+                uniform float uBandSpread;
+                uniform float uOctaveDecay;
+                uniform float uLayerOffset;
+                uniform float uColorSpeed;
+                uniform vec2 uMouse;
+                uniform float uMouseInfluence;
+                uniform bool uEnableMouse;
+
+                #define TAU 6.28318
+
+                vec3 gradientHash(vec3 p) {
+                  p = vec3(
+                    dot(p, vec3(127.1, 311.7, 234.6)),
+                    dot(p, vec3(269.5, 183.3, 198.3)),
+                    dot(p, vec3(169.5, 283.3, 156.9))
+                  );
+                  vec3 h = fract(sin(p) * 43758.5453123);
+                  float phi = acos(2.0 * h.x - 1.0);
+                  float theta = TAU * h.y;
+                  return vec3(cos(theta) * sin(phi), sin(theta) * cos(phi), cos(phi));
+                }
+
+                float quinticSmooth(float t) {
+                  float t2 = t * t;
+                  float t3 = t * t2;
+                  return 6.0 * t3 * t2 - 15.0 * t2 * t2 + 10.0 * t3;
+                }
+
+                vec3 cosineGradient(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
+                  return a + b * cos(TAU * (c * t + d));
+                }
+
+                float perlin3D(float amplitude, float frequency, float px, float py, float pz) {
+                  float x = px * frequency;
+                  float y = py * frequency;
+
+                  float fx = floor(x); float fy = floor(y); float fz = floor(pz);
+                  float cx = ceil(x);  float cy = ceil(y);  float cz = ceil(pz);
+
+                  vec3 g000 = gradientHash(vec3(fx, fy, fz));
+                  vec3 g100 = gradientHash(vec3(cx, fy, fz));
+                  vec3 g010 = gradientHash(vec3(fx, cy, fz));
+                  vec3 g110 = gradientHash(vec3(cx, cy, fz));
+                  vec3 g001 = gradientHash(vec3(fx, fy, cz));
+                  vec3 g101 = gradientHash(vec3(cx, fy, cz));
+                  vec3 g011 = gradientHash(vec3(fx, cy, cz));
+                  vec3 g111 = gradientHash(vec3(cx, cy, cz));
+
+                  float d000 = dot(g000, vec3(x - fx, y - fy, pz - fz));
+                  float d100 = dot(g100, vec3(x - cx, y - fy, pz - fz));
+                  float d010 = dot(g010, vec3(x - fx, y - cy, pz - fz));
+                  float d110 = dot(g110, vec3(x - cx, y - cy, pz - fz));
+                  float d001 = dot(g001, vec3(x - fx, y - fy, pz - cz));
+                  float d101 = dot(g101, vec3(x - cx, y - fy, pz - cz));
+                  float d011 = dot(g011, vec3(x - fx, y - cy, pz - cz));
+                  float d111 = dot(g111, vec3(x - cx, y - cy, pz - cz));
+
+                  float sx = quinticSmooth(x - fx);
+                  float sy = quinticSmooth(y - fy);
+                  float sz = quinticSmooth(pz - fz);
+
+                  float lx00 = mix(d000, d100, sx);
+                  float lx10 = mix(d010, d110, sx);
+                  float lx01 = mix(d001, d101, sx);
+                  float lx11 = mix(d011, d111, sx);
+
+                  float ly0 = mix(lx00, lx10, sy);
+                  float ly1 = mix(lx01, lx11, sy);
+
+                  return amplitude * mix(ly0, ly1, sz);
+                }
+
+                float auroraGlow(float t, vec2 shift) {
+                  vec2 uv = gl_FragCoord.xy / uResolution.y;
+                  uv += shift;
+
+                  float noiseVal = 0.0;
+                  float freq = uNoiseFreq;
+                  float amp = uNoiseAmp;
+                  vec2 samplePos = uv * uScale;
+
+                  for (float i = 0.0; i < 3.0; i += 1.0) {
+                    noiseVal += perlin3D(amp, freq, samplePos.x, samplePos.y, t);
+                    amp *= uOctaveDecay;
+                    freq *= 2.0;
+                  }
+
+                  float yBand = uv.y * 10.0 - uBandHeight * 10.0;
+                  return 0.3 * max(exp(uBandSpread * (1.0 - 1.1 * abs(noiseVal + yBand))), 0.0);
+                }
+
+                void main() {
+                  vec2 uv = gl_FragCoord.xy / uResolution.xy;
+                  float t = uSpeed * 0.4 * uTime;
+
+                  vec2 shift = vec2(0.0);
+                  if (uEnableMouse) {
+                    shift = (uMouse - 0.5) * uMouseInfluence;
+                  }
+
+                  vec3 col = vec3(0.0);
+                  col += 0.99 * auroraGlow(t, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.2 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3, 0.20, 0.20)) * uColor1;
+                  col += 0.99 * auroraGlow(t + uLayerOffset, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.1 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0, 1.0, 0.0), vec3(0.5, 0.20, 0.25)) * uColor2;
+
+                  col *= uBrightness;
+                  float alpha = clamp(length(col), 0.0, 1.0);
+                  gl_FragColor = vec4(col, alpha);
+                }
+              `;
+
+                function hexToVec3(hex) {
+                    const h = hex.replace('#', '');
+                    return [
+                        parseInt(h.slice(0, 2), 16) / 255,
+                        parseInt(h.slice(2, 4), 16) / 255,
+                        parseInt(h.slice(4, 6), 16) / 255
+                    ];
+                }
+
+                const geometry = new Triangle(gl);
+                const program = new Program(gl, {
+                    vertex: vertexShader,
+                    fragment: fragmentShader,
+                    uniforms: {
+                        uTime: { value: 0 },
+                        uResolution: { value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height] },
+                        uSpeed: { value: 0.6 },
+                        uScale: { value: 1.5 },
+                        uBrightness: { value: 0.7 },
+                        uColor1: { value: hexToVec3('#00f0c0') }, // primary
+                        uColor2: { value: hexToVec3('#d946ef') }, // accent
+                        uNoiseFreq: { value: 2.5 },
+                        uNoiseAmp: { value: 1.0 },
+                        uBandHeight: { value: 0.5 },
+                        uBandSpread: { value: 1.0 },
+                        uOctaveDecay: { value: 0.1 },
+                        uLayerOffset: { value: 0 },
+                        uColorSpeed: { value: 1.0 },
+                        uMouse: { value: new Float32Array([0.5, 0.5]) },
+                        uMouseInfluence: { value: 0.2 },
+                        uEnableMouse: { value: true }
+                    }
+                });
+
+                const mesh = new Mesh(gl, { geometry, program });
+                container.appendChild(gl.canvas);
+
+                // Mouse tracking for aurora
+                let targetMouse = [0.5, 0.5];
+                let currentMouse = [0.5, 0.5];
+
+                function handleMouseMove(e) {
+                    const rect = gl.canvas.getBoundingClientRect();
+                    targetMouse = [
+                        (e.clientX - rect.left) / rect.width,
+                        1.0 - (e.clientY - rect.top) / rect.height
+                    ];
+                }
+
+                function handleMouseLeave() {
+                    targetMouse = [0.5, 0.5];
+                }
+
+                gl.canvas.addEventListener('mousemove', handleMouseMove);
+                gl.canvas.addEventListener('mouseleave', handleMouseLeave);
+
+                // Resize
+                function resize() {
+                    const width = container.offsetWidth || window.innerWidth;
+                    const height = container.offsetHeight || window.innerHeight;
+                    renderer.setSize(width, height);
+                    program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height];
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                let frameId;
+
+                function animate(time) {
+                    frameId = requestAnimationFrame(animate);
+                    program.uniforms.uTime.value = time * 0.001;
+
+                    // Smooth mouse
+                    currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
+                    currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
+                    program.uniforms.uMouse.value[0] = currentMouse[0];
+                    program.uniforms.uMouse.value[1] = currentMouse[1];
+
+                    renderer.render({ scene: mesh });
+                }
+                animate(0);
+
+                // Cleanup not needed for single-page, but for completeness we could store cleanup.
+                // We'll leave it as is.
+            })();
+
+            // ---------- particles (keep existing, reduce count) ----------
             (function particles() {
                 const canvas = document.getElementById('particles-canvas');
                 if (!canvas) return;
                 const ctx = canvas.getContext('2d');
                 let w, h;
                 const particles = [];
-                const COUNT = 80;
+                const COUNT = 60; // reduced
 
                 const resize = () => {
                     w = canvas.width = window.innerWidth;
@@ -1501,10 +1797,10 @@
                     reset() {
                         this.x = Math.random() * w;
                         this.y = Math.random() * h;
-                        this.vx = (Math.random() - 0.5) * 0.5;
-                        this.vy = (Math.random() - 0.5) * 0.5;
-                        this.r = Math.random() * 2.5 + 1.2;
-                        this.a = Math.random() * 0.5 + 0.15;
+                        this.vx = (Math.random() - 0.5) * 0.4;
+                        this.vy = (Math.random() - 0.5) * 0.4;
+                        this.r = Math.random() * 2 + 1;
+                        this.a = Math.random() * 0.4 + 0.1;
                     }
                     update() {
                         this.x += this.vx;
@@ -1529,12 +1825,12 @@
                             const dx = particles[i].x - particles[j].x;
                             const dy = particles[i].y - particles[j].y;
                             const dist = Math.sqrt(dx * dx + dy * dy);
-                            if (dist < 140) {
+                            if (dist < 120) {
                                 ctx.beginPath();
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(0, 240, 192, ${0.08 * (1 - dist / 140)})`;
-                                ctx.lineWidth = 0.6;
+                                ctx.strokeStyle = `rgba(0, 240, 192, ${0.06 * (1 - dist / 120)})`;
+                                ctx.lineWidth = 0.5;
                                 ctx.stroke();
                             }
                         }
@@ -1555,7 +1851,6 @@
             (function cursor() {
                 const dot = document.getElementById('cursorDot');
                 if (!dot) return;
-                // check if touch device
                 if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
                     dot.style.display = 'none';
                     return;
@@ -1594,11 +1889,9 @@
                 const sections = document.querySelectorAll('section[id]');
 
                 window.addEventListener('scroll', () => {
-                    // shrink
                     if (window.scrollY > 50) nav.classList.add('shrink');
                     else nav.classList.remove('shrink');
 
-                    // active
                     let current = '';
                     sections.forEach(sec => {
                         const top = sec.offsetTop - 100;
