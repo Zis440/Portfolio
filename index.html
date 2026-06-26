@@ -13,8 +13,7 @@
     <meta name="theme-color" content="#0a0a0a" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://saphalyadas.com" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
-    <!-- Google Fonts via link tag (more reliable than @import) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -44,6 +43,18 @@
             scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
         }
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
         body {
             font-family: 'Inter', -apple-system, system-ui, sans-serif;
             background: var(--bg);
@@ -52,7 +63,6 @@
             line-height: 1.6;
             min-height: 100vh;
         }
-        /* fallback animated gradient background (visible if WebGL fails) */
         body::before {
             content: '';
             position: fixed;
@@ -112,6 +122,18 @@
             display: block;
             width: 100% !important;
             height: 100% !important;
+        }
+
+        /* ----- Particle system ----- */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.55;
         }
 
         /* ----- custom cursor (desktop only) ----- */
@@ -380,6 +402,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            will-change: transform;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), #00c9a0);
@@ -1214,6 +1237,8 @@
     <div id="aurora-container"></div>
     <!-- Plasma overlay -->
     <div id="plasma-container"></div>
+    <!-- Particle system -->
+    <canvas id="particles-canvas"></canvas>
 
     <!-- custom cursor -->
     <div class="cursor-dot" id="cursorDot"></div>
@@ -1242,10 +1267,10 @@
                     Multimodal AI · Neural Interfaces · Generative Systems · Mental Health Intelligence
                 </p>
                 <div class="hero-btns">
-                    <a href="#projects" class="btn btn-primary">Explore Work →</a>
-                    <a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank" class="btn btn-outline">LinkedIn</a>
-                    <a href="https://github.com/Zis440" target="_blank" class="btn btn-outline">GitHub</a>
-                    <a href="#contact" class="btn btn-ghost">Contact</a>
+                    <a href="#projects" class="btn btn-primary magnetic">Explore Work →</a>
+                    <a href="https://linkedin.com/in/saphalya-das-81a06b1b3" target="_blank" class="btn btn-outline magnetic">LinkedIn</a>
+                    <a href="https://github.com/Zis440" target="_blank" class="btn btn-outline magnetic">GitHub</a>
+                    <a href="#contact" class="btn btn-ghost magnetic">Contact</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat-item"><span class="stat-number" id="statProjects">5</span><span class="stat-label">Projects</span></div>
@@ -1257,7 +1282,7 @@
             <div class="hero-profile">
                 <div class="profile-ring">
                     <div class="profile-ring-inner">
-                        <img src="./img.png" alt="Saphalya Das" />
+                        <img src="./img.png" alt="Saphalya Das" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#00f0c0,#d946ef);border-radius:50%;font-family:Space+Grotesk,sans-serif;font-size:clamp(2rem,6vw,4rem);font-weight:700;color:#05050a;>SD</div>';" />
                     </div>
                 </div>
                 <div class="floating-badge" style="top:5%; right:-8%;">🧠 Neural AI</div>
@@ -1539,7 +1564,7 @@
                         <input type="text" placeholder="Name" required />
                         <input type="email" placeholder="Email" required />
                         <textarea placeholder="Message" required></textarea>
-                        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send Message</button>
+                        <button type="submit" class="btn btn-primary magnetic" style="width:100%; justify-content:center;">Send Message</button>
                         <div id="formStatus" style="margin-top:12px; color:var(--primary); display:none;">✓ Message sent successfully!</div>
                     </form>
                 </div>
@@ -1571,527 +1596,648 @@
     <!-- back to top -->
     <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
-    <!-- OGL library for WebGL effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ogl/0.0.35/ogl.min.js">
-    </script>
-
+    <!-- OGL library for WebGL effects – primary CDN with fallback -->
     <script>
-        (function() {
-            'use strict';
+        // Load OGL with fallback CDNs
+        (function loadOGL() {
+            var scripts = [
+                'https://unpkg.com/ogl@0.0.35/dist/ogl.min.js',
+                'https://cdn.jsdelivr.net/npm/ogl@0.0.35/dist/ogl.min.js'
+            ];
+            var loaded = false;
+            var idx = 0;
 
-            // ---------- AURORA (SoftAurora) ----------
-            (function aurora() {
-                const container = document.getElementById('aurora-container');
-                if (!container) return;
-                if (typeof OGL === 'undefined') {
-                    container.style.display = 'none';
+            function tryLoad() {
+                if (idx >= scripts.length) {
+                    console.warn('OGL: all CDN sources failed. WebGL backgrounds will be disabled.');
                     return;
                 }
+                var s = document.createElement('script');
+                s.src = scripts[idx];
+                s.onload = function() {
+                    loaded = true;
+                    console.log('OGL loaded from:', scripts[idx]);
+                    initAllEffects();
+                };
+                s.onerror = function() {
+                    idx++;
+                    tryLoad();
+                };
+                document.head.appendChild(s);
+            }
+            tryLoad();
+            // Expose init function globally
+            window._oglReady = function(cb) {
+                if (typeof OGL !== 'undefined') { cb(); return; }
+                var check = setInterval(function() {
+                    if (typeof OGL !== 'undefined') { clearInterval(check);
+                        cb(); }
+                }, 50);
+            };
+            window._initAllEffects = initAllEffects;
+        })();
 
-                try {
-                    const { Renderer, Program, Mesh, Triangle } = OGL;
+        function initAllEffects() {
+            initAurora();
+            initPlasma();
+            initParticles();
+        }
 
-                    const renderer = new Renderer({ alpha: true, premultipliedAlpha: false });
-                    const gl = renderer.gl;
-                    gl.clearColor(0, 0, 0, 0);
+        // ---------- AURORA (SoftAurora) ----------
+        function initAurora() {
+            var container = document.getElementById('aurora-container');
+            if (!container) return;
+            if (typeof OGL === 'undefined') {
+                container.style.display = 'none';
+                return;
+            }
 
-                    const vertexShader =
-                        `
-                  attribute vec2 uv;
-                  attribute vec2 position;
-                  varying vec2 vUv;
-                  void main() {
-                    vUv = uv;
-                    gl_Position = vec4(position, 0, 1);
-                  }
-                `;
+            try {
+                var OGL_Renderer = OGL.Renderer,
+                    OGL_Program = OGL.Program,
+                    OGL_Mesh = OGL.Mesh,
+                    OGL_Triangle = OGL.Triangle;
 
-                    const fragmentShader =
-                        `
-                  precision highp float;
-                  uniform float uTime;
-                  uniform vec3 uResolution;
-                  uniform float uSpeed;
-                  uniform float uScale;
-                  uniform float uBrightness;
-                  uniform vec3 uColor1;
-                  uniform vec3 uColor2;
-                  uniform float uNoiseFreq;
-                  uniform float uNoiseAmp;
-                  uniform float uBandHeight;
-                  uniform float uBandSpread;
-                  uniform float uOctaveDecay;
-                  uniform float uLayerOffset;
-                  uniform float uColorSpeed;
-                  uniform vec2 uMouse;
-                  uniform float uMouseInfluence;
-                  uniform bool uEnableMouse;
+                var renderer = new OGL_Renderer({ alpha: true, premultipliedAlpha: false });
+                var gl = renderer.gl;
+                gl.clearColor(0, 0, 0, 0);
 
-                  #define TAU 6.28318
+                var vertexShader = [
+                    'attribute vec2 uv;',
+                    'attribute vec2 position;',
+                    'varying vec2 vUv;',
+                    'void main() {',
+                    '  vUv = uv;',
+                    '  gl_Position = vec4(position, 0, 1);',
+                    '}'
+                ].join('\n');
 
-                  vec3 gradientHash(vec3 p) {
-                    p = vec3(
-                      dot(p, vec3(127.1, 311.7, 234.6)),
-                      dot(p, vec3(269.5, 183.3, 198.3)),
-                      dot(p, vec3(169.5, 283.3, 156.9))
-                    );
-                    vec3 h = fract(sin(p) * 43758.5453123);
-                    float phi = acos(2.0 * h.x - 1.0);
-                    float theta = TAU * h.y;
-                    return vec3(cos(theta) * sin(phi), sin(theta) * cos(phi), cos(phi));
-                  }
+                var fragmentShader = [
+                    'precision highp float;',
+                    'uniform float uTime;',
+                    'uniform vec3 uResolution;',
+                    'uniform float uSpeed;',
+                    'uniform float uScale;',
+                    'uniform float uBrightness;',
+                    'uniform vec3 uColor1;',
+                    'uniform vec3 uColor2;',
+                    'uniform float uNoiseFreq;',
+                    'uniform float uNoiseAmp;',
+                    'uniform float uBandHeight;',
+                    'uniform float uBandSpread;',
+                    'uniform float uOctaveDecay;',
+                    'uniform float uLayerOffset;',
+                    'uniform float uColorSpeed;',
+                    'uniform vec2 uMouse;',
+                    'uniform float uMouseInfluence;',
+                    'uniform bool uEnableMouse;',
+                    'varying vec2 vUv;',
+                    '#define TAU 6.28318',
+                    '',
+                    'vec3 gradientHash(vec3 p) {',
+                    '  p = vec3(dot(p, vec3(127.1, 311.7, 234.6)), dot(p, vec3(269.5, 183.3, 198.3)), dot(p, vec3(169.5, 283.3, 156.9)));',
+                    '  vec3 h = fract(sin(p) * 43758.5453123);',
+                    '  float phi = acos(2.0 * h.x - 1.0);',
+                    '  float theta = TAU * h.y;',
+                    '  return vec3(cos(theta) * sin(phi), sin(theta) * cos(phi), cos(phi));',
+                    '}',
+                    '',
+                    'float quinticSmooth(float t) {',
+                    '  float t2 = t * t;',
+                    '  float t3 = t * t2;',
+                    '  return 6.0 * t3 * t2 - 15.0 * t2 * t2 + 10.0 * t3;',
+                    '}',
+                    '',
+                    'vec3 cosineGradient(float t, vec3 a, vec3 b, vec3 c, vec3 d) {',
+                    '  return a + b * cos(TAU * (c * t + d));',
+                    '}',
+                    '',
+                    'float perlin3D(float amplitude, float frequency, float px, float py, float pz) {',
+                    '  float x = px * frequency;',
+                    '  float y = py * frequency;',
+                    '  float fx = floor(x); float fy = floor(y); float fz = floor(pz);',
+                    '  float cx = ceil(x);  float cy = ceil(y);  float cz = ceil(pz);',
+                    '  vec3 g000 = gradientHash(vec3(fx, fy, fz));',
+                    '  vec3 g100 = gradientHash(vec3(cx, fy, fz));',
+                    '  vec3 g010 = gradientHash(vec3(fx, cy, fz));',
+                    '  vec3 g110 = gradientHash(vec3(cx, cy, fz));',
+                    '  vec3 g001 = gradientHash(vec3(fx, fy, cz));',
+                    '  vec3 g101 = gradientHash(vec3(cx, fy, cz));',
+                    '  vec3 g011 = gradientHash(vec3(fx, cy, cz));',
+                    '  vec3 g111 = gradientHash(vec3(cx, cy, cz));',
+                    '  float d000 = dot(g000, vec3(x - fx, y - fy, pz - fz));',
+                    '  float d100 = dot(g100, vec3(x - cx, y - fy, pz - fz));',
+                    '  float d010 = dot(g010, vec3(x - fx, y - cy, pz - fz));',
+                    '  float d110 = dot(g110, vec3(x - cx, y - cy, pz - fz));',
+                    '  float d001 = dot(g001, vec3(x - fx, y - fy, pz - cz));',
+                    '  float d101 = dot(g101, vec3(x - cx, y - fy, pz - cz));',
+                    '  float d011 = dot(g011, vec3(x - fx, y - cy, pz - cz));',
+                    '  float d111 = dot(g111, vec3(x - cx, y - cy, pz - cz));',
+                    '  float sx = quinticSmooth(x - fx);',
+                    '  float sy = quinticSmooth(y - fy);',
+                    '  float sz = quinticSmooth(pz - fz);',
+                    '  float lx00 = mix(d000, d100, sx);',
+                    '  float lx10 = mix(d010, d110, sx);',
+                    '  float lx01 = mix(d001, d101, sx);',
+                    '  float lx11 = mix(d011, d111, sx);',
+                    '  float ly0 = mix(lx00, lx10, sy);',
+                    '  float ly1 = mix(lx01, lx11, sy);',
+                    '  return amplitude * mix(ly0, ly1, sz);',
+                    '}',
+                    '',
+                    'float auroraGlow(float t, vec2 shift) {',
+                    '  vec2 uv = gl_FragCoord.xy / uResolution.y;',
+                    '  uv += shift;',
+                    '  float noiseVal = 0.0;',
+                    '  float freq = uNoiseFreq;',
+                    '  float amp = uNoiseAmp;',
+                    '  vec2 samplePos = uv * uScale;',
+                    '  for (float i = 0.0; i < 3.0; i += 1.0) {',
+                    '    noiseVal += perlin3D(amp, freq, samplePos.x, samplePos.y, t);',
+                    '    amp *= uOctaveDecay;',
+                    '    freq *= 2.0;',
+                    '  }',
+                    '  float yBand = uv.y * 10.0 - uBandHeight * 10.0;',
+                    '  return 0.3 * max(exp(uBandSpread * (1.0 - 1.1 * abs(noiseVal + yBand))), 0.0);',
+                    '}',
+                    '',
+                    'void main() {',
+                    '  vec2 uv = gl_FragCoord.xy / uResolution.xy;',
+                    '  float t = uSpeed * 0.4 * uTime;',
+                    '  vec2 shift = vec2(0.0);',
+                    '  if (uEnableMouse) { shift = (uMouse - 0.5) * uMouseInfluence; }',
+                    '  vec3 col = vec3(0.0);',
+                    '  col += 0.99 * auroraGlow(t, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.2 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3, 0.20, 0.20)) * uColor1;',
+                    '  col += 0.99 * auroraGlow(t + uLayerOffset, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.1 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0, 1.0, 0.0), vec3(0.5, 0.20, 0.25)) * uColor2;',
+                    '  col *= uBrightness;',
+                    '  float alpha = clamp(length(col), 0.0, 1.0);',
+                    '  gl_FragColor = vec4(col, alpha);',
+                    '}'
+                ].join('\n');
 
-                  float quinticSmooth(float t) {
-                    float t2 = t * t;
-                    float t3 = t * t2;
-                    return 6.0 * t3 * t2 - 15.0 * t2 * t2 + 10.0 * t3;
-                  }
+                function hexToVec3(h) {
+                    var hex = h.replace('#', '');
+                    return [
+                        parseInt(hex.slice(0, 2), 16) / 255,
+                        parseInt(hex.slice(2, 4), 16) / 255,
+                        parseInt(hex.slice(4, 6), 16) / 255
+                    ];
+                }
 
-                  vec3 cosineGradient(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
-                    return a + b * cos(TAU * (c * t + d));
-                  }
-
-                  float perlin3D(float amplitude, float frequency, float px, float py, float pz) {
-                    float x = px * frequency;
-                    float y = py * frequency;
-
-                    float fx = floor(x); float fy = floor(y); float fz = floor(pz);
-                    float cx = ceil(x);  float cy = ceil(y);  float cz = ceil(pz);
-
-                    vec3 g000 = gradientHash(vec3(fx, fy, fz));
-                    vec3 g100 = gradientHash(vec3(cx, fy, fz));
-                    vec3 g010 = gradientHash(vec3(fx, cy, fz));
-                    vec3 g110 = gradientHash(vec3(cx, cy, fz));
-                    vec3 g001 = gradientHash(vec3(fx, fy, cz));
-                    vec3 g101 = gradientHash(vec3(cx, fy, cz));
-                    vec3 g011 = gradientHash(vec3(fx, cy, cz));
-                    vec3 g111 = gradientHash(vec3(cx, cy, cz));
-
-                    float d000 = dot(g000, vec3(x - fx, y - fy, pz - fz));
-                    float d100 = dot(g100, vec3(x - cx, y - fy, pz - fz));
-                    float d010 = dot(g010, vec3(x - fx, y - cy, pz - fz));
-                    float d110 = dot(g110, vec3(x - cx, y - cy, pz - fz));
-                    float d001 = dot(g001, vec3(x - fx, y - fy, pz - cz));
-                    float d101 = dot(g101, vec3(x - cx, y - fy, pz - cz));
-                    float d011 = dot(g011, vec3(x - fx, y - cy, pz - cz));
-                    float d111 = dot(g111, vec3(x - cx, y - cy, pz - cz));
-
-                    float sx = quinticSmooth(x - fx);
-                    float sy = quinticSmooth(y - fy);
-                    float sz = quinticSmooth(pz - fz);
-
-                    float lx00 = mix(d000, d100, sx);
-                    float lx10 = mix(d010, d110, sx);
-                    float lx01 = mix(d001, d101, sx);
-                    float lx11 = mix(d011, d111, sx);
-
-                    float ly0 = mix(lx00, lx10, sy);
-                    float ly1 = mix(lx01, lx11, sy);
-
-                    return amplitude * mix(ly0, ly1, sz);
-                  }
-
-                  float auroraGlow(float t, vec2 shift) {
-                    vec2 uv = gl_FragCoord.xy / uResolution.y;
-                    uv += shift;
-
-                    float noiseVal = 0.0;
-                    float freq = uNoiseFreq;
-                    float amp = uNoiseAmp;
-                    vec2 samplePos = uv * uScale;
-
-                    for (float i = 0.0; i < 3.0; i += 1.0) {
-                      noiseVal += perlin3D(amp, freq, samplePos.x, samplePos.y, t);
-                      amp *= uOctaveDecay;
-                      freq *= 2.0;
+                var geometry = new OGL_Triangle(gl);
+                var program = new OGL_Program(gl, {
+                    vertex: vertexShader,
+                    fragment: fragmentShader,
+                    uniforms: {
+                        uTime: { value: 0 },
+                        uResolution: { value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height] },
+                        uSpeed: { value: 0.5 },
+                        uScale: { value: 1.3 },
+                        uBrightness: { value: 1.0 },
+                        uColor1: { value: hexToVec3('#00f0c0') },
+                        uColor2: { value: hexToVec3('#d946ef') },
+                        uNoiseFreq: { value: 2.2 },
+                        uNoiseAmp: { value: 0.9 },
+                        uBandHeight: { value: 0.45 },
+                        uBandSpread: { value: 0.9 },
+                        uOctaveDecay: { value: 0.12 },
+                        uLayerOffset: { value: 0.3 },
+                        uColorSpeed: { value: 1.2 },
+                        uMouse: { value: new Float32Array([0.5, 0.5]) },
+                        uMouseInfluence: { value: 0.2 },
+                        uEnableMouse: { value: true }
                     }
+                });
 
-                    float yBand = uv.y * 10.0 - uBandHeight * 10.0;
-                    return 0.3 * max(exp(uBandSpread * (1.0 - 1.1 * abs(noiseVal + yBand))), 0.0);
-                  }
+                var mesh = new OGL_Mesh(gl, { geometry: geometry, program: program });
+                container.appendChild(gl.canvas);
 
-                  void main() {
-                    vec2 uv = gl_FragCoord.xy / uResolution.xy;
-                    float t = uSpeed * 0.4 * uTime;
+                var targetMouse = [0.5, 0.5];
+                var currentMouse = [0.5, 0.5];
 
-                    vec2 shift = vec2(0.0);
-                    if (uEnableMouse) {
-                      shift = (uMouse - 0.5) * uMouseInfluence;
+                function handleMove(e) {
+                    var rect = gl.canvas.getBoundingClientRect();
+                    targetMouse = [
+                        (e.clientX - rect.left) / rect.width,
+                        1.0 - (e.clientY - rect.top) / rect.height
+                    ];
+                }
+
+                function handleLeave() { targetMouse = [0.5, 0.5]; }
+                gl.canvas.addEventListener('mousemove', handleMove);
+                gl.canvas.addEventListener('mouseleave', handleLeave);
+
+                function resize() {
+                    var w = container.offsetWidth || window.innerWidth;
+                    var h = container.offsetHeight || window.innerHeight;
+                    renderer.setSize(w, h);
+                    program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas
+                        .height
+                    ];
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                var frame;
+
+                function animate(time) {
+                    frame = requestAnimationFrame(animate);
+                    program.uniforms.uTime.value = time * 0.001;
+                    currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
+                    currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
+                    program.uniforms.uMouse.value[0] = currentMouse[0];
+                    program.uniforms.uMouse.value[1] = currentMouse[1];
+                    renderer.render({ scene: mesh });
+                }
+                requestAnimationFrame(animate);
+                console.log('Aurora WebGL initialized successfully');
+            } catch (e) {
+                console.warn('Aurora WebGL initialization failed:', e.message);
+                container.style.display = 'none';
+            }
+        }
+
+        // ---------- PLASMA (WebGL1 compatible) ----------
+        function initPlasma() {
+            var container = document.getElementById('plasma-container');
+            if (!container) return;
+            if (typeof OGL === 'undefined') {
+                container.style.display = 'none';
+                return;
+            }
+
+            try {
+                var OGL_Renderer = OGL.Renderer,
+                    OGL_Program = OGL.Program,
+                    OGL_Mesh = OGL.Mesh,
+                    OGL_Triangle = OGL.Triangle;
+
+                var renderer = new OGL_Renderer({ alpha: true, premultipliedAlpha: false });
+                var gl = renderer.gl;
+                gl.clearColor(0, 0, 0, 0);
+
+                // WebGL1 compatible vertex shader
+                var vertexShader = [
+                    'precision highp float;',
+                    'attribute vec2 position;',
+                    'attribute vec2 uv;',
+                    'varying vec2 vUv;',
+                    'void main() {',
+                    '  vUv = uv;',
+                    '  gl_Position = vec4(position, 0.0, 1.0);',
+                    '}'
+                ].join('\n');
+
+                // WebGL1 compatible fragment shader (converted from #version 300 es)
+                var fragmentShader = [
+                    'precision highp float;',
+                    'uniform vec2 iResolution;',
+                    'uniform float iTime;',
+                    'uniform vec3 uCustomColor;',
+                    'uniform float uUseCustomColor;',
+                    'uniform float uSpeed;',
+                    'uniform float uDirection;',
+                    'uniform float uScale;',
+                    'uniform float uOpacity;',
+                    'uniform vec2 uMouse;',
+                    'uniform float uMouseInteractive;',
+                    'varying vec2 vUv;',
+                    '',
+                    'bool finite1(float x) { return !(x != x || abs(x) > 1e30); }',
+                    'vec3 sanitize(vec3 c) {',
+                    '  return vec3(',
+                    '    finite1(c.r) ? c.r : 0.0,',
+                    '    finite1(c.g) ? c.g : 0.0,',
+                    '    finite1(c.b) ? c.b : 0.0',
+                    '  );',
+                    '}',
+                    '',
+                    'vec4 mainImage(vec2 C) {',
+                    '  vec2 center = iResolution.xy * 0.5;',
+                    '  C = (C - center) / uScale + center;',
+                    '  vec2 mouseOffset = (uMouse - center) * 0.0002;',
+                    '  C += mouseOffset * length(C - center) * step(0.5, uMouseInteractive);',
+                    '  vec4 o = vec4(0.0);',
+                    '  float i = 0.0;',
+                    '  float d = 0.0;',
+                    '  float z = 0.0;',
+                    '  float T = iTime * uSpeed * uDirection;',
+                    '  vec3 O = vec3(0.0);',
+                    '  vec3 p;',
+                    '  vec3 S;',
+                    '  vec2 r = iResolution.xy;',
+                    '  vec2 Q;',
+                    '  for (float iter = 0.0; iter < 60.0; iter += 1.0) {',
+                    '    p = z * normalize(vec3(C - 0.5 * r, r.y));',
+                    '    p.z -= 4.0;',
+                    '    S = p;',
+                    '    d = p.y - T;',
+                    '    p.x += 0.4 * (1.0 + p.y) * sin(d + p.x * 0.1) * cos(0.34 * d + p.x * 0.05);',
+                    '    Q = p.xz * mat2(cos(p.y + vec4(0.0, 11.0, 33.0, 0.0) - T));',
+                    '    z += d = abs(sqrt(length(Q * Q)) - 0.25 * (5.0 + S.y)) / 3.0 + 8e-4;',
+                    '    o = 1.0 + sin(S.y + p.z * 0.5 + S.z - length(S - p) + vec4(2.0, 1.0, 0.0, 8.0));',
+                    '    O += o.w / d * o.xyz;',
+                    '  }',
+                    '  return vec4(tanh(O / 1e4), 1.0);',
+                    '}',
+                    '',
+                    'void main() {',
+                    '  vec4 o = mainImage(gl_FragCoord.xy);',
+                    '  vec3 rgb = sanitize(o.rgb);',
+                    '  float intensity = (rgb.r + rgb.g + rgb.b) / 3.0;',
+                    '  vec3 customColor = intensity * uCustomColor;',
+                    '  vec3 finalColor = mix(rgb, customColor, step(0.5, uUseCustomColor));',
+                    '  float alpha = length(rgb) * uOpacity;',
+                    '  gl_FragColor = vec4(finalColor, alpha);',
+                    '}'
+                ].join('\n');
+
+                var customColor = [0.0, 0.9, 0.75];
+                var useCustom = 1.0;
+
+                var geometry = new OGL_Triangle(gl);
+                var program = new OGL_Program(gl, {
+                    vertex: vertexShader,
+                    fragment: fragmentShader,
+                    uniforms: {
+                        iTime: { value: 0 },
+                        iResolution: { value: new Float32Array([1, 1]) },
+                        uCustomColor: { value: new Float32Array(customColor) },
+                        uUseCustomColor: { value: useCustom },
+                        uSpeed: { value: 0.5 },
+                        uDirection: { value: 1.0 },
+                        uScale: { value: 1.2 },
+                        uOpacity: { value: 0.35 },
+                        uMouse: { value: new Float32Array([0, 0]) },
+                        uMouseInteractive: { value: 1.0 }
                     }
+                });
 
-                    vec3 col = vec3(0.0);
-                    col += 0.99 * auroraGlow(t, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.2 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3, 0.20, 0.20)) * uColor1;
-                    col += 0.99 * auroraGlow(t + uLayerOffset, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.1 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0, 1.0, 0.0), vec3(0.5, 0.20, 0.25)) * uColor2;
+                var mesh = new OGL_Mesh(gl, { geometry: geometry, program: program });
+                container.appendChild(gl.canvas);
 
-                    col *= uBrightness;
-                    float alpha = clamp(length(col), 0.0, 1.0);
-                    gl_FragColor = vec4(col, alpha);
-                  }
-                `;
+                var mousePos = { x: 0, y: 0 };
 
-                    function hexToVec3(h) {
-                        const hex = h.replace('#', '');
-                        return [
-                            parseInt(hex.slice(0, 2), 16) / 255,
-                            parseInt(hex.slice(2, 4), 16) / 255,
-                            parseInt(hex.slice(4, 6), 16) / 255
-                        ];
-                    }
+                function handleMove(e) {
+                    var rect = container.getBoundingClientRect();
+                    mousePos.x = e.clientX - rect.left;
+                    mousePos.y = e.clientY - rect.top;
+                    var m = program.uniforms.uMouse.value;
+                    m[0] = mousePos.x;
+                    m[1] = mousePos.y;
+                }
+                container.addEventListener('mousemove', handleMove);
 
-                    const geometry = new Triangle(gl);
-                    const program = new Program(gl, {
-                        vertex: vertexShader,
-                        fragment: fragmentShader,
-                        uniforms: {
-                            uTime: { value: 0 },
-                            uResolution: { value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas
-                                    .height
-                                ] },
-                            uSpeed: { value: 0.5 },
-                            uScale: { value: 1.3 },
-                            uBrightness: { value: 1.0 },
-                            uColor1: { value: hexToVec3('#00f0c0') },
-                            uColor2: { value: hexToVec3('#d946ef') },
-                            uNoiseFreq: { value: 2.2 },
-                            uNoiseAmp: { value: 0.9 },
-                            uBandHeight: { value: 0.45 },
-                            uBandSpread: { value: 0.9 },
-                            uOctaveDecay: { value: 0.12 },
-                            uLayerOffset: { value: 0.3 },
-                            uColorSpeed: { value: 1.2 },
-                            uMouse: { value: new Float32Array([0.5, 0.5]) },
-                            uMouseInfluence: { value: 0.2 },
-                            uEnableMouse: { value: true }
+                function resize() {
+                    var w = container.offsetWidth || window.innerWidth;
+                    var h = container.offsetHeight || window.innerHeight;
+                    renderer.setSize(w, h);
+                    var res = program.uniforms.iResolution.value;
+                    res[0] = gl.drawingBufferWidth;
+                    res[1] = gl.drawingBufferHeight;
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                var frame;
+
+                function animate(time) {
+                    frame = requestAnimationFrame(animate);
+                    program.uniforms.iTime.value = time * 0.001;
+                    renderer.render({ scene: mesh });
+                }
+                requestAnimationFrame(animate);
+                console.log('Plasma WebGL initialized successfully');
+            } catch (e) {
+                console.warn('Plasma WebGL initialization failed:', e.message);
+                container.style.display = 'none';
+            }
+        }
+
+        // ---------- FLOATING PARTICLE SYSTEM ----------
+        function initParticles() {
+            var canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            var particles = [];
+            var particleCount = 60;
+            var connectionDist = 120;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (var i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 2 + 0.8,
+                    opacity: Math.random() * 0.5 + 0.2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var i, j, p, q, dx, dy, dist;
+
+                for (i = 0; i < particleCount; i++) {
+                    p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0,240,192,' + p.opacity + ')';
+                    ctx.fill();
+
+                    for (j = i + 1; j < particleCount; j++) {
+                        q = particles[j];
+                        dx = p.x - q.x;
+                        dy = p.y - q.y;
+                        dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < connectionDist) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(q.x, q.y);
+                            ctx.strokeStyle = 'rgba(0,240,192,' + (0.08 * (1 - dist / connectionDist)) + ')';
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
                         }
-                    });
-
-                    const mesh = new Mesh(gl, { geometry, program });
-                    container.appendChild(gl.canvas);
-
-                    let targetMouse = [0.5, 0.5];
-                    let currentMouse = [0.5, 0.5];
-
-                    function handleMove(e) {
-                        const rect = gl.canvas.getBoundingClientRect();
-                        targetMouse = [
-                            (e.clientX - rect.left) / rect.width,
-                            1.0 - (e.clientY - rect.top) / rect.height
-                        ];
                     }
-
-                    function handleLeave() { targetMouse = [0.5, 0.5]; }
-
-                    gl.canvas.addEventListener('mousemove', handleMove);
-                    gl.canvas.addEventListener('mouseleave', handleLeave);
-
-                    function resize() {
-                        const w = container.offsetWidth || window.innerWidth;
-                        const h = container.offsetHeight || window.innerHeight;
-                        renderer.setSize(w, h);
-                        program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl
-                            .canvas.height
-                        ];
-                    }
-                    window.addEventListener('resize', resize);
-                    resize();
-
-                    let frame;
-
-                    function animate(time) {
-                        frame = requestAnimationFrame(animate);
-                        program.uniforms.uTime.value = time * 0.001;
-                        currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
-                        currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
-                        program.uniforms.uMouse.value[0] = currentMouse[0];
-                        program.uniforms.uMouse.value[1] = currentMouse[1];
-                        renderer.render({ scene: mesh });
-                    }
-                    animate(0);
-                } catch (e) {
-                    container.style.display = 'none';
                 }
-            })();
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+            console.log('Particle system initialized');
+        }
 
-            // ---------- PLASMA ----------
-            (function plasma() {
-                const container = document.getElementById('plasma-container');
-                if (!container) return;
-                if (typeof OGL === 'undefined') {
-                    container.style.display = 'none';
-                    return;
-                }
+        // ---------- CUSTOM CURSOR ----------
+        (function cursor() {
+            var dot = document.getElementById('cursorDot');
+            if (!dot) return;
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                dot.style.display = 'none';
+                return;
+            }
+            var mx = 0,
+                my = 0,
+                px = 0,
+                py = 0;
 
-                try {
-                    const { Renderer, Program, Mesh, Triangle } = OGL;
+            document.addEventListener('mousemove', function(e) {
+                mx = e.clientX;
+                my = e.clientY;
+                if (dot.style.display === 'none') dot.style.display = 'block';
+            });
+            document.addEventListener('mouseleave', function() { dot.style.display = 'none'; });
 
-                    const renderer = new Renderer({ alpha: true, premultipliedAlpha: false });
-                    const gl = renderer.gl;
-                    gl.clearColor(0, 0, 0, 0);
+            function loop() {
+                px += (mx - px) * 0.12;
+                py += (my - py) * 0.12;
+                dot.style.transform = 'translate(' + px + 'px, ' + py + 'px)';
+                requestAnimationFrame(loop);
+            }
+            loop();
 
-                    const vertexShader = `#version 300 es
-                  precision highp float;
-                  in vec2 position;
-                  in vec2 uv;
-                  out vec2 vUv;
-                  void main() {
-                    vUv = uv;
-                    gl_Position = vec4(position, 0.0, 1.0);
-                  }
-                `;
+            var hoverTargets = document.querySelectorAll('a, .btn, .skill-chip, .cert-item, .glass, .project-card, .award-card');
+            hoverTargets.forEach(function(el) {
+                el.addEventListener('mouseenter', function() { dot.classList.add('hover'); });
+                el.addEventListener('mouseleave', function() { dot.classList.remove('hover'); });
+            });
+        })();
 
-                    const fragmentShader = `#version 300 es
-                  precision highp float;
-                  uniform vec2 iResolution;
-                  uniform float iTime;
-                  uniform vec3 uCustomColor;
-                  uniform float uUseCustomColor;
-                  uniform float uSpeed;
-                  uniform float uDirection;
-                  uniform float uScale;
-                  uniform float uOpacity;
-                  uniform vec2 uMouse;
-                  uniform float uMouseInteractive;
-                  out vec4 fragColor;
-
-                  void mainImage(out vec4 o, vec2 C) {
-                    vec2 center = iResolution.xy * 0.5;
-                    C = (C - center) / uScale + center;
-
-                    vec2 mouseOffset = (uMouse - center) * 0.0002;
-                    C += mouseOffset * length(C - center) * step(0.5, uMouseInteractive);
-
-                    float i, d, z, T = iTime * uSpeed * uDirection;
-                    vec3 O, p, S;
-
-                    for (vec2 r = iResolution.xy, Q; ++i < 60.; O += o.w/d*o.xyz) {
-                      p = z*normalize(vec3(C-.5*r,r.y));
-                      p.z -= 4.;
-                      S = p;
-                      d = p.y-T;
-
-                      p.x += .4*(1.+p.y)*sin(d + p.x*0.1)*cos(.34*d + p.x*0.05);
-                      Q = p.xz *= mat2(cos(p.y+vec4(0,11,33,0)-T));
-                      z += d = abs(sqrt(length(Q*Q)) - .25*(5.+S.y))/3.+8e-4;
-                      o = 1.+sin(S.y+p.z*.5+S.z-length(S-p)+vec4(2,1,0,8));
-                    }
-
-                    o.xyz = tanh(O/1e4);
-                  }
-
-                  bool finite1(float x){ return !(isnan(x) || isinf(x)); }
-                  vec3 sanitize(vec3 c){
-                    return vec3(
-                      finite1(c.r) ? c.r : 0.0,
-                      finite1(c.g) ? c.g : 0.0,
-                      finite1(c.b) ? c.b : 0.0
-                    );
-                  }
-
-                  void main() {
-                    vec4 o = vec4(0.0);
-                    mainImage(o, gl_FragCoord.xy);
-                    vec3 rgb = sanitize(o.rgb);
-
-                    float intensity = (rgb.r + rgb.g + rgb.b) / 3.0;
-                    vec3 customColor = intensity * uCustomColor;
-                    vec3 finalColor = mix(rgb, customColor, step(0.5, uUseCustomColor));
-
-                    float alpha = length(rgb) * uOpacity;
-                    fragColor = vec4(finalColor, alpha);
-                  }
-                `;
-
-                    const customColor = [0.0, 0.9, 0.75];
-                    const useCustom = 1.0;
-
-                    const geometry = new Triangle(gl);
-                    const program = new Program(gl, {
-                        vertex: vertexShader,
-                        fragment: fragmentShader,
-                        uniforms: {
-                            iTime: { value: 0 },
-                            iResolution: { value: new Float32Array([1, 1]) },
-                            uCustomColor: { value: new Float32Array(customColor) },
-                            uUseCustomColor: { value: useCustom },
-                            uSpeed: { value: 0.5 },
-                            uDirection: { value: 1.0 },
-                            uScale: { value: 1.2 },
-                            uOpacity: { value: 0.35 },
-                            uMouse: { value: new Float32Array([0, 0]) },
-                            uMouseInteractive: { value: 1.0 }
-                        }
-                    });
-
-                    const mesh = new Mesh(gl, { geometry, program });
-                    container.appendChild(gl.canvas);
-
-                    let mousePos = { x: 0, y: 0 };
-
-                    function handleMove(e) {
-                        const rect = container.getBoundingClientRect();
-                        mousePos.x = e.clientX - rect.left;
-                        mousePos.y = e.clientY - rect.top;
-                        const m = program.uniforms.uMouse.value;
-                        m[0] = mousePos.x;
-                        m[1] = mousePos.y;
-                    }
-                    container.addEventListener('mousemove', handleMove);
-
-                    function resize() {
-                        const w = container.offsetWidth || window.innerWidth;
-                        const h = container.offsetHeight || window.innerHeight;
-                        renderer.setSize(w, h);
-                        const res = program.uniforms.iResolution.value;
-                        res[0] = gl.drawingBufferWidth;
-                        res[1] = gl.drawingBufferHeight;
-                    }
-                    window.addEventListener('resize', resize);
-                    resize();
-
-                    let frame;
-
-                    function animate(time) {
-                        frame = requestAnimationFrame(animate);
-                        program.uniforms.iTime.value = time * 0.001;
-                        renderer.render({ scene: mesh });
-                    }
-                    animate(0);
-                } catch (e) {
-                    container.style.display = 'none';
-                }
-            })();
-
-            // ---------- CUSTOM CURSOR ----------
-            (function cursor() {
-                const dot = document.getElementById('cursorDot');
-                if (!dot) return;
-                if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-                    dot.style.display = 'none';
-                    return;
-                }
-                let mx = 0,
-                    my = 0,
-                    px = 0,
-                    py = 0;
-
-                document.addEventListener('mousemove', (e) => {
-                    mx = e.clientX;
-                    my = e.clientY;
-                    if (dot.style.display === 'none') dot.style.display = 'block';
+        // ---------- MAGNETIC BUTTONS ----------
+        (function magnetic() {
+            var buttons = document.querySelectorAll('.magnetic');
+            buttons.forEach(function(btn) {
+                btn.addEventListener('mousemove', function(e) {
+                    var rect = btn.getBoundingClientRect();
+                    var x = e.clientX - rect.left - rect.width / 2;
+                    var y = e.clientY - rect.top - rect.height / 2;
+                    var strength = 0.25;
+                    var moveX = x * strength;
+                    var moveY = y * strength;
+                    btn.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)';
+                    btn.style.transition = 'transform 0.15s ease-out';
                 });
-                document.addEventListener('mouseleave', () => { dot.style.display = 'none'; });
-
-                function loop() {
-                    px += (mx - px) * 0.12;
-                    py += (my - py) * 0.12;
-                    dot.style.transform = `translate(${px}px, ${py}px)`;
-                    requestAnimationFrame(loop);
-                }
-                loop();
-
-                document.querySelectorAll('a, .btn, .skill-chip, .cert-item, .glass, .project-card, .award-card')
-                    .forEach(el => {
-                        el.addEventListener('mouseenter', () => dot.classList.add('hover'));
-                        el.addEventListener('mouseleave', () => dot.classList.remove('hover'));
-                    });
-            })();
-
-            // ---------- NAVBAR ----------
-            (function navbar() {
-                const nav = document.getElementById('navbar');
-                const links = document.querySelectorAll('.nav-links a');
-                const sections = document.querySelectorAll('section[id]');
-
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 50) nav.classList.add('shrink');
-                    else nav.classList.remove('shrink');
-
-                    let current = '';
-                    sections.forEach(function(sec) {
-                        const top = sec.offsetTop - 100;
-                        if (window.scrollY >= top) current = sec.getAttribute('id');
-                    });
-                    links.forEach(function(link) {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-                    });
+                btn.addEventListener('mouseleave', function() {
+                    btn.style.transform = 'translate(0px, 0px)';
+                    btn.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
                 });
-            })();
+            });
+        })();
 
-            // ---------- REVEAL ----------
-            (function reveal() {
-                const els = document.querySelectorAll('.reveal');
-                const observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) entry.target.classList.add('visible');
-                    });
-                }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-                els.forEach(function(el) { observer.observe(el); });
-            })();
+        // ---------- NAVBAR ----------
+        (function navbar() {
+            var nav = document.getElementById('navbar');
+            var links = document.querySelectorAll('.nav-links a');
+            var sections = document.querySelectorAll('section[id]');
 
-            // ---------- STATS ----------
-            (function stats() {
-                var targets = { statProjects: 5, statPubs: 3, statAwards: 2, statExp: 2 };
-                var els = {};
-                for (var id in targets) {
-                    var el = document.getElementById(id);
-                    if (el) els[id] = { el: el, val: targets[id], current: 0 };
-                }
-                var started = false;
+            function updateNav() {
+                if (window.scrollY > 50) nav.classList.add('shrink');
+                else nav.classList.remove('shrink');
 
-                function animateStats() {
-                    var any = false;
-                    for (var key in els) {
-                        var o = els[key];
-                        if (o.current < o.val) {
-                            o.current += Math.ceil((o.val - o.current) / 8) + 0.3;
-                            if (o.current > o.val) o.current = o.val;
-                            o.el.textContent = Math.floor(o.current);
-                            any = true;
-                        }
+                var current = '';
+                sections.forEach(function(sec) {
+                    var top = sec.offsetTop - 100;
+                    if (window.scrollY >= top) current = sec.getAttribute('id');
+                });
+                links.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+                });
+            }
+            window.addEventListener('scroll', updateNav);
+            updateNav();
+        })();
+
+        // ---------- REVEAL ----------
+        (function reveal() {
+            var els = document.querySelectorAll('.reveal');
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+            els.forEach(function(el) { observer.observe(el); });
+        })();
+
+        // ---------- STATS ----------
+        (function stats() {
+            var targets = { statProjects: 5, statPubs: 3, statAwards: 2, statExp: 2 };
+            var els = {};
+            for (var id in targets) {
+                var el = document.getElementById(id);
+                if (el) els[id] = { el: el, val: targets[id], current: 0 };
+            }
+            var started = false;
+
+            function animateStats() {
+                var any = false;
+                for (var key in els) {
+                    var o = els[key];
+                    if (o.current < o.val) {
+                        o.current += Math.ceil((o.val - o.current) / 8) + 0.3;
+                        if (o.current > o.val) o.current = o.val;
+                        o.el.textContent = Math.floor(o.current);
+                        any = true;
                     }
-                    if (any) requestAnimationFrame(animateStats);
                 }
+                if (any) requestAnimationFrame(animateStats);
+            }
 
-                var observer = new IntersectionObserver(function(entries) {
-                    if (entries.some(function(e) { return e.isIntersecting; }) && !started) {
-                        started = true;
-                        animateStats();
-                    }
-                }, { threshold: 0.15 });
-                var hero = document.querySelector('#hero');
-                if (hero) observer.observe(hero);
-            })();
+            var observer = new IntersectionObserver(function(entries) {
+                if (entries.some(function(e) { return e.isIntersecting; }) && !started) {
+                    started = true;
+                    animateStats();
+                }
+            }, { threshold: 0.15 });
+            var hero = document.querySelector('#hero');
+            if (hero) observer.observe(hero);
+        })();
 
-            // ---------- BACK TO TOP ----------
-            (function backTop() {
-                var btn = document.getElementById('backTop');
-                if (!btn) return;
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 500) btn.classList.add('visible');
-                    else btn.classList.remove('visible');
-                });
-                btn.addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            })();
+        // ---------- BACK TO TOP ----------
+        (function backTop() {
+            var btn = document.getElementById('backTop');
+            if (!btn) return;
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 500) btn.classList.add('visible');
+                else btn.classList.remove('visible');
+            });
+            btn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
 
-            // ---------- CONTACT FORM ----------
-            (function form() {
-                var form = document.getElementById('contactForm');
-                if (!form) return;
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    var status = document.getElementById('formStatus');
-                    if (status) {
-                        status.style.display = 'block';
-                        setTimeout(function() { status.style.display = 'none'; }, 4000);
-                    }
-                    form.reset();
-                });
-            })();
+        // ---------- CONTACT FORM ----------
+        (function form() {
+            var form = document.getElementById('contactForm');
+            if (!form) return;
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var status = document.getElementById('formStatus');
+                if (status) {
+                    status.style.display = 'block';
+                    setTimeout(function() { status.style.display = 'none'; }, 4000);
+                }
+                form.reset();
+            });
+        })();
 
-            // ---------- SMOOTH ANCHOR ----------
+        // ---------- SMOOTH ANCHOR ----------
+        (function smoothAnchors() {
             document.querySelectorAll('a[href^="#"]').forEach(function(a) {
                 a.addEventListener('click', function(e) {
                     var target = document.querySelector(a.getAttribute('href'));
@@ -2102,9 +2248,9 @@
                     }
                 });
             });
-
-            console.log('%c🧠 Saphalya Das · AI Researcher', 'font-size:20px; font-weight:bold; color:#00f0c0;');
         })();
+
+        console.log('%c🧠 Saphalya Das · AI Researcher · Portfolio Ready', 'font-size:20px; font-weight:bold; color:#00f0c0;');
     </script>
 </body>
 </html>
