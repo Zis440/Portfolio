@@ -1605,8 +1605,8 @@
         // Load OGL with fallback CDNs
         (function loadOGL() {
             var scripts = [
-                'https://unpkg.com/ogl@0.0.35/dist/ogl.min.js',
-                'https://cdn.jsdelivr.net/npm/ogl@0.0.35/dist/ogl.min.js'
+                'https://unpkg.com/ogl@0.0.35/dist/ogl.umd.js',
+                'https://cdn.jsdelivr.net/npm/ogl@0.0.35/dist/ogl.umd.js'
             ];
             var loaded = false;
             var idx = 0;
@@ -1614,12 +1614,18 @@
             function tryLoad() {
                 if (idx >= scripts.length) {
                     console.warn('OGL: all CDN sources failed. WebGL backgrounds will be disabled.');
+                    // Still init particles (they don't need OGL)
+                    initParticles();
                     return;
                 }
                 var s = document.createElement('script');
                 s.src = scripts[idx];
                 s.onload = function() {
                     loaded = true;
+                    // OGL UMD exports as window.ogl (lowercase) - alias to uppercase for compatibility
+                    if (typeof window.ogl !== 'undefined' && typeof window.OGL === 'undefined') {
+                        window.OGL = window.ogl;
+                    }
                     console.log('OGL loaded from:', scripts[idx]);
                     initAllEffects();
                 };
