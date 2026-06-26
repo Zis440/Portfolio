@@ -14,10 +14,13 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://saphalyadas.com" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+    <!-- Google Fonts via link tag (more reliable than @import) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
+        /* ----- RESET & BASE ----- */
         * {
             margin: 0;
             padding: 0;
@@ -48,10 +51,8 @@
             overflow-x: hidden;
             line-height: 1.6;
             min-height: 100vh;
-            /* fallback animated gradient */
-            background: radial-gradient(ellipse at 30% 20%, #0a1a1a, #05050a 70%);
         }
-        /* fallback animated gradient overlay */
+        /* fallback animated gradient background (visible if WebGL fails) */
         body::before {
             content: '';
             position: fixed;
@@ -59,27 +60,28 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 240, 192, 0.05) 0%, transparent 60%),
-                radial-gradient(circle at 80% 80%, rgba(217, 70, 239, 0.04) 0%, transparent 50%);
-            animation: bgPulse 12s ease-in-out infinite alternate;
+            background: radial-gradient(ellipse at 30% 20%, rgba(0, 240, 192, 0.06), rgba(217, 70, 239, 0.04), transparent 70%),
+                radial-gradient(ellipse at 70% 80%, rgba(0, 240, 192, 0.04), rgba(217, 70, 239, 0.03), transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
             z-index: -3;
             pointer-events: none;
         }
         @keyframes bgPulse {
             0% {
                 transform: scale(1) rotate(0deg);
+                opacity: 0.6;
             }
             100% {
-                transform: scale(1.1) rotate(5deg);
+                transform: scale(1.15) rotate(6deg);
+                opacity: 1;
             }
         }
-
         ::selection {
             background: var(--primary);
             color: #000;
         }
 
-        /* ----- WebGL backgrounds ----- */
+        /* ----- WebGL containers (with fallback) ----- */
         #aurora-container {
             position: fixed;
             top: 0;
@@ -88,6 +90,12 @@
             height: 100%;
             z-index: -2;
             pointer-events: none;
+            background: transparent;
+        }
+        #aurora-container canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
         }
         #plasma-container {
             position: fixed;
@@ -100,8 +108,13 @@
             opacity: 0.35;
             mix-blend-mode: screen;
         }
+        #plasma-container canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
 
-        /* ----- custom cursor ----- */
+        /* ----- custom cursor (desktop only) ----- */
         .cursor-dot {
             position: fixed;
             width: 10px;
@@ -1559,7 +1572,8 @@
     <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
     <!-- OGL library for WebGL effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ogl/0.0.35/ogl.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ogl/0.0.35/ogl.min.js">
+    </script>
 
     <script>
         (function() {
@@ -1569,7 +1583,6 @@
             (function aurora() {
                 const container = document.getElementById('aurora-container');
                 if (!container) return;
-                // fallback if OGL fails
                 if (typeof OGL === 'undefined') {
                     container.style.display = 'none';
                     return;
@@ -1582,7 +1595,8 @@
                     const gl = renderer.gl;
                     gl.clearColor(0, 0, 0, 0);
 
-                    const vertexShader = `
+                    const vertexShader =
+                        `
                   attribute vec2 uv;
                   attribute vec2 position;
                   varying vec2 vUv;
@@ -1592,7 +1606,8 @@
                   }
                 `;
 
-                    const fragmentShader = `
+                    const fragmentShader =
+                        `
                   precision highp float;
                   uniform float uTime;
                   uniform vec3 uResolution;
@@ -1793,7 +1808,6 @@
                     }
                     animate(0);
                 } catch (e) {
-                    // fallback: hide container
                     container.style.display = 'none';
                 }
             })();
@@ -1988,16 +2002,16 @@
                 const links = document.querySelectorAll('.nav-links a');
                 const sections = document.querySelectorAll('section[id]');
 
-                window.addEventListener('scroll', () => {
+                window.addEventListener('scroll', function() {
                     if (window.scrollY > 50) nav.classList.add('shrink');
                     else nav.classList.remove('shrink');
 
                     let current = '';
-                    sections.forEach(sec => {
+                    sections.forEach(function(sec) {
                         const top = sec.offsetTop - 100;
                         if (window.scrollY >= top) current = sec.getAttribute('id');
                     });
-                    links.forEach(link => {
+                    links.forEach(function(link) {
                         link.classList.remove('active');
                         if (link.getAttribute('href') === '#' + current) link.classList.add('active');
                     });
@@ -2007,28 +2021,28 @@
             // ---------- REVEAL ----------
             (function reveal() {
                 const els = document.querySelectorAll('.reveal');
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
                         if (entry.isIntersecting) entry.target.classList.add('visible');
                     });
                 }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-                els.forEach(el => observer.observe(el));
+                els.forEach(function(el) { observer.observe(el); });
             })();
 
             // ---------- STATS ----------
             (function stats() {
-                const targets = { statProjects: 5, statPubs: 3, statAwards: 2, statExp: 2 };
-                const els = {};
-                for (const [id, val] of Object.entries(targets)) {
-                    const el = document.getElementById(id);
-                    if (el) els[id] = { el, val, current: 0 };
+                var targets = { statProjects: 5, statPubs: 3, statAwards: 2, statExp: 2 };
+                var els = {};
+                for (var id in targets) {
+                    var el = document.getElementById(id);
+                    if (el) els[id] = { el: el, val: targets[id], current: 0 };
                 }
-                let started = false;
+                var started = false;
 
                 function animateStats() {
-                    let any = false;
-                    for (const key in els) {
-                        const o = els[key];
+                    var any = false;
+                    for (var key in els) {
+                        var o = els[key];
                         if (o.current < o.val) {
                             o.current += Math.ceil((o.val - o.current) / 8) + 0.3;
                             if (o.current > o.val) o.current = o.val;
@@ -2039,52 +2053,52 @@
                     if (any) requestAnimationFrame(animateStats);
                 }
 
-                const observer = new IntersectionObserver((entries) => {
-                    if (entries.some(e => e.isIntersecting) && !started) {
+                var observer = new IntersectionObserver(function(entries) {
+                    if (entries.some(function(e) { return e.isIntersecting; }) && !started) {
                         started = true;
                         animateStats();
                     }
                 }, { threshold: 0.15 });
-                const hero = document.querySelector('#hero');
+                var hero = document.querySelector('#hero');
                 if (hero) observer.observe(hero);
             })();
 
             // ---------- BACK TO TOP ----------
             (function backTop() {
-                const btn = document.getElementById('backTop');
+                var btn = document.getElementById('backTop');
                 if (!btn) return;
-                window.addEventListener('scroll', () => {
+                window.addEventListener('scroll', function() {
                     if (window.scrollY > 500) btn.classList.add('visible');
                     else btn.classList.remove('visible');
                 });
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', function() {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             })();
 
             // ---------- CONTACT FORM ----------
             (function form() {
-                const form = document.getElementById('contactForm');
+                var form = document.getElementById('contactForm');
                 if (!form) return;
-                form.addEventListener('submit', (e) => {
+                form.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    const status = document.getElementById('formStatus');
+                    var status = document.getElementById('formStatus');
                     if (status) {
                         status.style.display = 'block';
-                        setTimeout(() => { status.style.display = 'none'; }, 4000);
+                        setTimeout(function() { status.style.display = 'none'; }, 4000);
                     }
                     form.reset();
                 });
             })();
 
             // ---------- SMOOTH ANCHOR ----------
-            document.querySelectorAll('a[href^="#"]').forEach(a => {
-                a.addEventListener('click', (e) => {
-                    const target = document.querySelector(a.getAttribute('href'));
+            document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+                a.addEventListener('click', function(e) {
+                    var target = document.querySelector(a.getAttribute('href'));
                     if (target) {
                         e.preventDefault();
-                        const top = target.offsetTop - 70;
-                        window.scrollTo({ top, behavior: 'smooth' });
+                        var top = target.offsetTop - 70;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
                     }
                 });
             });
