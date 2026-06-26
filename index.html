@@ -916,17 +916,6 @@
             box-shadow: 0 12px 48px var(--primary-glow);
         }
 
-        /* ----- reveal animations ----- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* ============================================================ */
         /*              RESPONSIVE                                       */
         /* ============================================================ */
@@ -2178,17 +2167,6 @@
             updateNav();
         })();
 
-        // ---------- REVEAL ----------
-        (function reveal() {
-            var els = document.querySelectorAll('.reveal');
-            var observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
-                });
-            }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-            els.forEach(function(el) { observer.observe(el); });
-        })();
-
         // ---------- STATS ----------
         (function stats() {
             var targets = { statProjects: 5, statPubs: 3, statAwards: 2, statExp: 2 };
@@ -2295,6 +2273,11 @@
 
             // Section reveals with GSAP ScrollTrigger
             gsap.utils.toArray('.reveal').forEach(function(el) {
+                if (el.classList.contains('timeline-item') || 
+                    el.classList.contains('project-card') || 
+                    el.classList.contains('award-card')) {
+                    return;
+                }
                 gsap.from(el, {
                     scrollTrigger: {
                         trigger: el,
