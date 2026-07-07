@@ -78,7 +78,7 @@ export default function Hero() {
     { number: 5, label: 'Projects', suffix: '+' },
     { number: 3, label: 'Publications', suffix: '' },
     { number: 2, label: 'Awards', suffix: '' },
-    { number: 2, label: 'Experience', suffix: 'yr' }
+
   ];
 
   // Mouse parallax for PFP
@@ -273,6 +273,7 @@ export default function Hero() {
           >
             <span className="text-lg">⚡</span> Multimodal
           </motion.div>
+
 
           <motion.div 
             animate={{ y: [0, 10, 0] }} 

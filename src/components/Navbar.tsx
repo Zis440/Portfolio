@@ -61,7 +61,7 @@ export default function Navbar() {
             }}
           />
           <a href="#hero" className="font-display font-bold text-xs sm:text-sm tracking-tight text-gradient animate-grad-shift">
-            SAPHALYA
+            SAPHALYA DAS
           </a>
         </div>
 

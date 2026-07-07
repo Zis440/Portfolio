@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Heart } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Footer() {
@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
             <span className="font-display font-bold text-base sm:text-lg text-gradient animate-grad-shift">SAPHALYA</span>
-            <span className="text-text-secondary text-xs hidden md:inline">AI Researcher & ML Engineer</span>
+            <span className="text-text-secondary text-xs hidden md:inline">Gen AI & Multimodal Systems Researcher</span>
           </div>
           
           <div className="flex gap-3">
@@ -31,7 +31,7 @@ export default function Footer() {
         <div className="section-divider mt-5 sm:mt-6" />
         
         <div className="mt-4 sm:mt-5 text-center text-text-secondary text-xs tracking-wide flex items-center justify-center gap-1.5 flex-wrap">
-          © {new Date().getFullYear()} Saphalya Das. Built with <Heart size={12} className="text-accent inline" /> All rights reserved.
+          © {new Date().getFullYear()} Saphalya Das. Still growing... All rights reserved.
         </div>
       </div>
     </footer>

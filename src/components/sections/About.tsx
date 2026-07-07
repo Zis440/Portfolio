@@ -46,7 +46,7 @@ export default function About() {
                 <span className="text-primary font-bold">📍</span> <span className="text-text-secondary">Kolkata, India</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-primary font-bold">🎯</span> <span className="text-text-secondary">Multimodal AI · BCI · RAG</span>
+                <span className="text-primary font-bold">🎯</span> <span className="text-text-secondary">Gen AI · LLMs · RAG · Multimodal AI</span>
               </div>
             </div>
           </motion.div>

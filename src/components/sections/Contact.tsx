@@ -5,12 +5,38 @@ import { Mail, Linkedin, Github, MapPin, Send } from 'lucide-react';
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormStatus("✓ Message sent successfully!");
-    (e.target as HTMLFormElement).reset();
-    setTimeout(() => setFormStatus(null), 3000);
+    setIsSubmitting(true);
+    setFormStatus(null);
+    
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/szd0238@gmail.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(Object.fromEntries(formData))
+      });
+      
+      if (response.ok) {
+        setFormStatus("✓ Message sent successfully!");
+        form.reset();
+      } else {
+        setFormStatus("❌ Failed to send. Please try again.");
+      }
+    } catch (error) {
+      setFormStatus("❌ Error sending message.");
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setFormStatus(null), 5000);
+    }
   };
 
   const inputStyle = (field: string) => ({
@@ -66,25 +92,25 @@ export default function Contact() {
           >
             <h4 className="text-base sm:text-lg font-semibold mb-5">Send a message</h4>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <input type="text" placeholder="Your name" required
+              <input type="text" name="name" placeholder="Your name" required
                 className="w-full px-4 py-3 rounded-2xl text-text outline-none transition-all duration-300 placeholder:text-text-secondary/40 text-sm"
                 style={inputStyle('name')}
                 onFocus={() => setFocused('name')} onBlur={() => setFocused(null)}
               />
-              <input type="email" placeholder="Your email" required
+              <input type="email" name="email" placeholder="Your email" required
                 className="w-full px-4 py-3 rounded-2xl text-text outline-none transition-all duration-300 placeholder:text-text-secondary/40 text-sm"
                 style={inputStyle('email')}
                 onFocus={() => setFocused('email')} onBlur={() => setFocused(null)}
               />
-              <textarea placeholder="Your message" required rows={4}
+              <textarea name="message" placeholder="Your message" required rows={4}
                 className="w-full px-4 py-3 rounded-2xl text-text outline-none transition-all duration-300 placeholder:text-text-secondary/40 resize-y text-sm"
                 style={inputStyle('message')}
                 onFocus={() => setFocused('message')} onBlur={() => setFocused(null)}
               />
-              <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                className="mt-1 bg-accent text-white px-6 py-3.5 rounded-2xl font-semibold flex justify-center items-center gap-2 w-full transition-all hover:shadow-[0_8px_32px_var(--color-accent-glow)] hover:brightness-110 text-sm"
+              <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                className="mt-1 bg-accent text-white px-6 py-3.5 rounded-2xl font-semibold flex justify-center items-center gap-2 w-full transition-all hover:shadow-[0_8px_32px_var(--color-accent-glow)] hover:brightness-110 text-sm disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Send Message <Send size={16} />
+                {isSubmitting ? 'Sending...' : 'Send Message'} <Send size={16} />
               </motion.button>
               
               {formStatus && (
