@@ -56,13 +56,13 @@ export default function Navbar() {
         </a>
 
         {/* Desktop Links — includes toggle at end */}
-        <div className="hidden md:flex items-center gap-1.5 lg:gap-3">
+        <div className="hidden md:flex items-center gap-4 lg:gap-6">
           {links.map((link) => (
             <a 
               key={link.name}
               href={link.href}
               className={twMerge(
-                "text-[0.65rem] lg:text-xs font-medium transition-all duration-300 relative group whitespace-nowrap px-1",
+                "text-xs sm:text-sm font-medium transition-all duration-300 relative group whitespace-nowrap px-1",
                 activeSection === link.href.slice(1) 
                   ? "text-text" 
                   : "text-text-secondary hover:text-text"
@@ -70,17 +70,17 @@ export default function Navbar() {
             >
               {link.name}
               <span className={twMerge(
-                "absolute -bottom-0.5 left-0 h-[1.5px] bg-accent transition-all duration-300 rounded-full",
+                "absolute -bottom-1.5 left-0 h-[1.5px] bg-accent transition-all duration-300 rounded-full",
                 activeSection === link.href.slice(1) ? "w-full" : "w-0 group-hover:w-full"
               )} />
             </a>
           ))}
           <a href="#contact"
-            className="bg-accent text-white px-3 py-1 rounded-full font-semibold text-[0.6rem] lg:text-[0.65rem] transition-all duration-300 hover:brightness-110 whitespace-nowrap ml-1"
+            className="bg-accent text-white px-4 py-1.5 rounded-full font-semibold text-xs transition-all duration-300 hover:brightness-110 whitespace-nowrap ml-2"
           >
             Contact
           </a>
-          <div className="ml-1">
+          <div className="ml-1 border-l border-border-color pl-3">
             <ThemeToggle />
           </div>
         </div>

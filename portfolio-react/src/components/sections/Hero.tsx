@@ -159,7 +159,9 @@ export default function Hero() {
               Explore Work <ArrowRight size={18} />
             </a>
             <a 
-              href="mailto:szd0238@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=szd0238@gmail.com"
+              target="_blank"
+              rel="noreferrer"
               className="flex items-center gap-2 border-2 border-primary/30 bg-primary/5 backdrop-blur-md px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-primary hover:bg-primary/15 hover:-translate-y-1 transition-all duration-300 font-medium text-xs sm:text-sm"
             >
               <Mail size={16} /> Email Me
@@ -174,7 +176,7 @@ export default function Hero() {
             {[
               { icon: Linkedin, href: "https://linkedin.com/in/saphalya-das-81a06b1b3", label: "LinkedIn" },
               { icon: Github, href: "https://github.com/Zis440", label: "GitHub" },
-              { icon: Mail, href: "mailto:szd0238@gmail.com", label: "Email" }
+              { icon: Mail, href: "https://mail.google.com/mail/?view=cm&fs=1&to=szd0238@gmail.com", label: "Email" }
             ].map((social) => (
               <a
                 key={social.label}
