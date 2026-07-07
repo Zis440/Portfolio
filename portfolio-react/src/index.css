@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text overflow-x-hidden min-h-screen font-sans;
+  }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+    box-shadow: 0 0 20px rgba(0, 240, 192, 0.45);
+  }
+
+  /* Custom Background Pulse Animation */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(0, 240, 192, 0.06), rgba(217, 70, 239, 0.04), transparent 70%),
+        radial-gradient(ellipse at 70% 80%, rgba(0, 240, 192, 0.04), rgba(217, 70, 239, 0.03), transparent 60%);
+    animation: bgPulse 15s ease-in-out infinite alternate;
+    z-index: -3;
+    pointer-events: none;
+  }
+
+  @keyframes bgPulse {
+    0% {
+      transform: scale(1) rotate(0deg);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.15) rotate(6deg);
+      opacity: 1;
+    }
+  }
+
+  ::selection {
+    @apply bg-primary text-black;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-background-glass backdrop-blur-[20px] border border-white/5 rounded-[28px] shadow-2xl;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-br from-primary via-accent to-primary bg-[length:200%_200%] bg-clip-text text-transparent;
+  }
+}
+
+/* Gradient Shift Animation for Text */
+.animate-grad-shift {
+  animation: gradShift 4s ease-in-out infinite;
+}
+
+@keyframes gradShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
