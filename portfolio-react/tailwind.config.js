@@ -4,27 +4,28 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class', // Enable class-based dark mode
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#00f0c0', // Cyan accent from current portfolio
-          glow: 'rgba(0, 240, 192, 0.45)',
+          DEFAULT: 'var(--color-primary)',
+          glow: 'var(--color-primary-glow)',
         },
         accent: {
-          DEFAULT: '#d946ef', // Magenta accent
-          glow: 'rgba(217, 70, 239, 0.35)',
+          DEFAULT: 'var(--color-accent)',
+          glow: 'var(--color-accent-glow)',
         },
         background: {
-          DEFAULT: '#05050a',
-          glass: 'rgba(8, 8, 18, 0.78)',
-          card: 'rgba(255, 255, 255, 0.02)',
+          DEFAULT: 'var(--color-bg)',
+          glass: 'var(--color-bg-glass)',
+          card: 'var(--color-bg-card)',
         },
         text: {
-          DEFAULT: '#f0f2f8',
-          secondary: '#989aa8',
-        }
+          DEFAULT: 'var(--color-text)',
+          secondary: 'var(--color-text-secondary)',
+        },
+        surface: 'var(--color-surface)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
