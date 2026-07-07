@@ -47,7 +47,11 @@
   }
 
   body {
-    @apply bg-background text-text overflow-x-hidden min-h-screen font-sans;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
     transition: background-color 0.4s ease, color 0.4s ease;
   }
 

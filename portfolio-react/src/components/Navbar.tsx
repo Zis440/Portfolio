@@ -51,9 +51,19 @@ export default function Navbar() {
           padding: scrolled ? '7px 12px' : '9px 16px',
         }}
       >
-        <a href="#hero" className="font-display font-bold text-xs sm:text-sm tracking-tight text-gradient animate-grad-shift shrink-0">
-          SAPHALYA
-        </a>
+        <div className="flex items-center gap-3 shrink-0">
+          <img 
+            src="/zis440_logo.jpeg" 
+            alt="Logo" 
+            className="w-8 h-8 rounded-full object-cover border border-primary/20"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
+          <a href="#hero" className="font-display font-bold text-xs sm:text-sm tracking-tight text-gradient animate-grad-shift">
+            SAPHALYA
+          </a>
+        </div>
 
         {/* Desktop Links — includes toggle at end */}
         <div className="hidden md:flex items-center gap-4 lg:gap-6">
