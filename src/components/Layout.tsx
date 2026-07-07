@@ -14,7 +14,7 @@ export default function Layout() {
   });
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen overflow-x-hidden">
       <CustomCursor />
       <ParticleField />
       

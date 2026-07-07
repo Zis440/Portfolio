@@ -16,7 +16,7 @@ export default function Marquee() {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="py-6 sm:py-10 overflow-hidden relative z-10"
+      className="py-6 sm:py-10 overflow-hidden relative z-10 w-full"
     >
       {/* Fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 z-10" style={{ background: 'linear-gradient(to right, var(--color-bg), transparent)' }} />

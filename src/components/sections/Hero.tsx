@@ -110,11 +110,11 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" className="min-h-[100dvh] flex items-center pt-16 sm:pt-20 pb-8 relative z-10 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12 items-center">
+    <section id="hero" className="min-h-[100dvh] flex items-center pt-16 sm:pt-20 pb-8 relative z-10 overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid lg:grid-cols-[1.3fr_1fr] gap-6 lg:gap-12 items-center">
         
-        {/* Text Column */}
-        <div className="order-2 lg:order-1">
+        {/* Text Column — first on mobile, left on desktop */}
+        <div className="order-1">
           <motion.div 
             custom={0} initial="hidden" animate="visible" variants={textVariants}
             className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[0.65rem] sm:text-xs font-medium text-primary tracking-wide mb-3 sm:mb-4 backdrop-blur-md"
@@ -216,7 +216,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-center items-center relative order-1 lg:order-2"
+          className="flex justify-center items-center relative order-2 lg:order-2 mt-2 lg:mt-0"
           onMouseMove={handleMouseMove}
         >
           {/* Glowing background ring */}
