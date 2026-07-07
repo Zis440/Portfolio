@@ -13,8 +13,9 @@ export default function ParticleField() {
     let animationId: number;
     let particles: Particle[] = [];
 
+    let isDark = document.documentElement.classList.contains('dark');
+    
     const getColors = () => {
-      const isDark = document.documentElement.classList.contains('dark');
       return {
         primary: isDark ? '158, 206, 142' : '46, 107, 58',
         accent: isDark ? '232, 64, 87' : '153, 27, 46',
@@ -117,7 +118,7 @@ export default function ParticleField() {
 
     // Listen for theme changes
     const observer = new MutationObserver(() => {
-      // Colors will update on next frame via getColors()
+      isDark = document.documentElement.classList.contains('dark');
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 

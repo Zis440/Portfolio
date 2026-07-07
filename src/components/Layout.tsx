@@ -26,7 +26,6 @@ export default function Layout() {
             top: '5%',
             left: '-8%',
             background: 'radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%)',
-            filter: 'blur(100px)',
             opacity: 0.4,
           }}
         />
@@ -36,7 +35,6 @@ export default function Layout() {
             top: '45%',
             right: '-5%',
             background: 'radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%)',
-            filter: 'blur(100px)',
             animationDelay: '3s',
             opacity: 0.3,
           }}
@@ -47,7 +45,6 @@ export default function Layout() {
             bottom: '10%',
             left: '25%',
             background: 'radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%)',
-            filter: 'blur(100px)',
             animationDelay: '6s',
             opacity: 0.25,
           }}

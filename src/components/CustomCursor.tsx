@@ -30,6 +30,12 @@ interface Trail {
 }
 
 export default function CustomCursor() {
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia("(hover: none) and (pointer: coarse)").matches);
+  }, []);
+
   const [isHovering, setIsHovering] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
   const [facingRight, setFacingRight] = useState(false);
@@ -54,6 +60,7 @@ export default function CustomCursor() {
 
   // Spawn footprints based on the ACTUAL animated position of the person
   useMotionValueEvent(cursorX, "change", (latestX) => {
+    if (isTouchDevice) return;
     const latestY = cursorY.get();
     
     const dx = latestX - lastTrailPos.current.x;
@@ -96,6 +103,8 @@ export default function CustomCursor() {
   });
 
   useEffect(() => {
+    if (isTouchDevice) return;
+
     const updateMousePosition = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -128,7 +137,9 @@ export default function CustomCursor() {
       window.removeEventListener('mouseover', handleMouseOver);
       if (moveTimeout.current) clearTimeout(moveTimeout.current);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, isTouchDevice]);
+
+  if (isTouchDevice) return null;
 
   return (
     <>
