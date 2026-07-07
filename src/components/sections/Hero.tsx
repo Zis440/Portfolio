@@ -220,7 +220,7 @@ export default function Hero() {
           onMouseMove={handleMouseMove}
         >
           {/* Glowing background ring */}
-          <div className="absolute w-[180px] h-[180px] sm:w-[230px] sm:h-[230px] lg:w-[310px] lg:h-[310px] rounded-full animate-rotate-slow"
+          <div className="absolute w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] lg:w-[310px] lg:h-[310px] rounded-full animate-rotate-slow"
             style={{
               background: 'conic-gradient(from 0deg, var(--color-primary), var(--color-accent), var(--color-primary))',
               filter: 'blur(30px)',
@@ -231,7 +231,7 @@ export default function Hero() {
           {/* PFP Container */}
           <motion.div 
             style={{ x: springX, y: springY }}
-            className="relative w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] lg:w-[280px] lg:h-[280px]"
+            className="relative w-[180px] h-[180px] sm:w-[210px] sm:h-[210px] lg:w-[280px] lg:h-[280px]"
           >
             {/* Rotating border ring */}
             <div className="absolute inset-0 rounded-full animate-rotate-slow p-[3px]"
@@ -261,7 +261,7 @@ export default function Hero() {
           <motion.div 
             animate={{ y: [0, -14, 0] }} 
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
-            className="absolute top-[5%] -right-[2%] sm:-right-[8%] bg-background-glass backdrop-blur-xl border border-primary/20 rounded-2xl px-4 py-2 text-xs sm:text-sm font-medium text-text-secondary flex items-center gap-2 shadow-2xl"
+            className="absolute top-[5%] -right-[8%] bg-background-glass backdrop-blur-xl border border-primary/20 rounded-2xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-text-secondary hidden sm:flex items-center gap-2 shadow-2xl"
           >
             <span className="text-lg">🧠</span> Neural AI
           </motion.div>
@@ -269,7 +269,7 @@ export default function Hero() {
           <motion.div 
             animate={{ y: [0, -14, 0] }} 
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2.6 }}
-            className="absolute bottom-[12%] -left-[2%] sm:-left-[10%] bg-background-glass backdrop-blur-xl border border-accent/20 rounded-2xl px-4 py-2 text-xs sm:text-sm font-medium text-text-secondary flex items-center gap-2 shadow-2xl"
+            className="absolute bottom-[12%] -left-[10%] bg-background-glass backdrop-blur-xl border border-accent/20 rounded-2xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-text-secondary hidden sm:flex items-center gap-2 shadow-2xl"
           >
             <span className="text-lg">⚡</span> Multimodal
           </motion.div>
