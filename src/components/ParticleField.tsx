@@ -14,7 +14,6 @@ export default function ParticleField() {
     let particles: Particle[] = [];
 
     const getColors = () => {
-      const style = getComputedStyle(document.documentElement);
       const isDark = document.documentElement.classList.contains('dark');
       return {
         primary: isDark ? '158, 206, 142' : '46, 107, 58',
