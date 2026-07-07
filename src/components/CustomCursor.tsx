@@ -1,56 +1,108 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Footprints } from 'lucide-react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useMotionValueEvent, useTransform } from 'framer-motion';
+
+const SingleFootprint = ({ size = 24, className = "" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <g transform="translate(5.5, 2)">
+      <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z" />
+      <path d="M4 13h4" />
+    </g>
+  </svg>
+);
 
 interface Trail {
   id: number;
   x: number;
   y: number;
   angle: number;
+  isLeft: boolean;
 }
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
+  const [facingRight, setFacingRight] = useState(false);
   
   const [trails, setTrails] = useState<Trail[]>([]);
-  const lastTrailPos = useRef({ x: 0, y: 0 });
   const trailId = useRef(0);
   const moveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Use Framer Motion values for perfect synchronization
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { stiffness: 500, damping: 28, mass: 0.5 };
+  const cursorX = useSpring(mouseX, springConfig);
+  const cursorY = useSpring(mouseY, springConfig);
+  
+  // Offset to center the cursor
+  const cursorXOffset = useTransform(cursorX, (val) => val - 16);
+  const cursorYOffset = useTransform(cursorY, (val) => val - 16);
+
+  const lastTrailPos = useRef({ x: 0, y: 0 });
+
+  // Spawn footprints based on the ACTUAL animated position of the person
+  useMotionValueEvent(cursorX, "change", (latestX) => {
+    const latestY = cursorY.get();
+    
+    const dx = latestX - lastTrailPos.current.x;
+    const dy = latestY - lastTrailPos.current.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist > 30) {
+      // Determine facing direction for the person
+      if (dx > 0) setFacingRight(true);
+      else if (dx < 0) setFacingRight(false);
+
+      const dirRad = Math.atan2(dy, dx);
+      const angle = dirRad * (180 / Math.PI) + 90;
+
+      const isLeft = trailId.current % 2 === 0;
+      
+      const offsetDist = 6;
+      const perpRad = isLeft ? dirRad - Math.PI / 2 : dirRad + Math.PI / 2;
+      const offsetX = Math.cos(perpRad) * offsetDist;
+      const offsetY = Math.sin(perpRad) * offsetDist;
+
+      lastTrailPos.current = { x: latestX, y: latestY };
+      const newTrail = { 
+        id: trailId.current++, 
+        x: latestX + offsetX, 
+        y: latestY + offsetY, 
+        angle,
+        isLeft 
+      };
+      
+      setTrails((prev) => {
+         const newTrails = [...prev, newTrail];
+         return newTrails.slice(-15);
+      });
+
+      setTimeout(() => {
+        setTrails((prev) => prev.filter(t => t.id !== newTrail.id));
+      }, 2000);
+    }
+  });
+
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
 
-      // Handle "moving" state for animation
       setIsMoving(true);
       if (moveTimeout.current) clearTimeout(moveTimeout.current);
       moveTimeout.current = setTimeout(() => setIsMoving(false), 100);
-
-      // Calculate distance from last trail
-      const dx = e.clientX - lastTrailPos.current.x;
-      const dy = e.clientY - lastTrailPos.current.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      // Add a footprint every 35 pixels
-      if (dist > 35) {
-        // Calculate angle so footprints face the direction of movement
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
-
-        lastTrailPos.current = { x: e.clientX, y: e.clientY };
-        const newTrail = { id: trailId.current++, x: e.clientX, y: e.clientY, angle };
-        
-        setTrails((prev) => {
-           const newTrails = [...prev, newTrail];
-           return newTrails.slice(-15); // Keep max 15 footprints to prevent DOM bloat
-        });
-
-        // Remove the footprint after 2 seconds
-        setTimeout(() => {
-          setTrails((prev) => prev.filter(t => t.id !== newTrail.id));
-        }, 2000);
-      }
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -76,7 +128,7 @@ export default function CustomCursor() {
       window.removeEventListener('mouseover', handleMouseOver);
       if (moveTimeout.current) clearTimeout(moveTimeout.current);
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
     <>
@@ -96,7 +148,9 @@ export default function CustomCursor() {
                 top: trail.y - 12,
               }}
             >
-              <Footprints size={18} />
+              <div style={{ transform: `scaleX(${trail.isLeft ? 1 : -1})` }}>
+                <SingleFootprint size={18} />
+              </div>
             </motion.div>
           ))}
         </AnimatePresence>
@@ -105,16 +159,12 @@ export default function CustomCursor() {
       {/* Main Cursor Wrapper */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:flex items-center justify-center"
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isHovering ? 1.3 : 1,
+        style={{
+          x: cursorXOffset,
+          y: cursorYOffset,
         }}
-        transition={{
-          type: 'spring',
-          stiffness: 500,
-          damping: 28,
-          mass: 0.5
+        animate={{
+          scale: isHovering ? 1.3 : 1,
         }}
       >
         {/* The Animated Person */}
@@ -123,12 +173,12 @@ export default function CustomCursor() {
           animate={{
             rotate: isMoving ? [-15, 15] : 0,
             y: isMoving ? [-3, 3] : 0,
+            scaleX: facingRight ? -1 : 1,
           }}
           transition={{
-            repeat: isMoving ? Infinity : 0,
-            repeatType: "mirror",
-            duration: 0.2,
-            ease: "easeInOut"
+            rotate: { repeat: isMoving ? Infinity : 0, repeatType: "mirror", duration: 0.2, ease: "easeInOut" },
+            y: { repeat: isMoving ? Infinity : 0, repeatType: "mirror", duration: 0.2, ease: "easeInOut" },
+            scaleX: { duration: 0.1 }
           }}
         >
           🚶‍♂️
