@@ -66,6 +66,7 @@ function ProjectCard({ project, idx }: { project: { icon: string; title: string;
 
 export default function Projects() {
   const projects = [
+    { icon: "🤖", title: "PsyPredictv2: Mental Health Assistant", tech: "FastAPI · Ollama/Groq · FAISS · TensorFlow", desc: "A mental health assistant built on async FastAPI with dual-LLM orchestration, semantic memory (ChromaDB), and multimodal ML pipelines including facial emotion detection and text classification.", tags: ["LLMs", "RAG", "Computer Vision", "NLP"] },
     { icon: "🧬", title: "AI Genomic Hybridization Analysis", tech: "BioPython · NumPy · Pandas · ML", desc: "Developed a genomic hybridization simulation framework using DNA sequence merging algorithms and predictive biological modelling techniques.", tags: ["Computational Biology", "BioPython", "ML"] },
     { icon: "🔷", title: "LID‑R – AI‑Based Object Reshaper", tech: "AI · Machine Learning · Mathematical Modeling", desc: "Designed an AI‑driven system for adaptive reshaping and transformation of geometric and mathematical 3D structures using machine learning.", tags: ["3D", "Mathematical Modeling"] },
     { icon: "📷", title: "REGICAM – ML Attendance System", tech: "Python · CNN · Computer Vision · NumPy · Pandas", desc: "Developed a CCTV‑based attendance system using CNN‑powered facial recognition for real‑time identity detection and automated tracking.", tags: ["Computer Vision", "CNN"] },
